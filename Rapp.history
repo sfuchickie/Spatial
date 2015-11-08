@@ -1,0 +1,507 @@
+dt.b <- as.Date(tmp$dt.int[1])				tmp$t2 <- as.numeric(tmp$dt.int - (dt.b - 180))				for(t in 2:nrow(tmp)) {					tmp$t1[t] <- max(c((tmp$t2[t-1] + 1), (tmp$t2[t] - 180)))					}				tmp$t1[1] <- c(0)#
+				tmp$flg <- c(0)#
+				while(sum(tmp$flg) < nrow(tmp)) {					srv <- min(tmp$survey[tmp$flg == 0])										if(tmp$vload50[tmp$survey == srv] == 1 & tmp$t1[tmp$survey == srv] == 0) {tmp$status[tmp$survey == srv] <- c(0); tmp$flg[tmp$survey == srv] <- c(1)}					if(tmp$vload50[tmp$survey == srv] == 1 & tmp$t1[tmp$survey == srv] > 0) {tmp$status[tmp$survey == srv] <- c(0); tmp$flg[tmp$survey == srv] <- c(1)}					if(tmp$vload50[tmp$survey == srv] == 0 & tmp$t1[tmp$survey == srv] > 0) {						tmp$status[tmp$survey == srv] <- c(1); tmp$flg[tmp$survey <= srv] <- c(1)						if(length(tmp$flg[tmp$flg == 0 & tmp$vload50 == 1]) == 0) {tmp$status[tmp$survey >= srv] <- c(NA); tmp$flg[tmp$survey >= srv] <- c(1)}						if(length(tmp$flg[tmp$flg == 0 & tmp$vload50 == 1]) > 0) {							nxt <- min(tmp$survey[tmp$flg == 0 & tmp$vload50 == 1])							tmp$status[tmp$survey > srv & tmp$survey < nxt] <- c(NA)							tmp$status[tmp$survey == nxt] <- c(0)							tmp$flg[tmp$survey <= nxt] <- c(1)							}												}					}
+tmp
+code <- sample(unique(ids$code[is.na(ids$bl) == FALSE]), 1)
+tmp <- evi[evi$code == code & evi$f == 1, c("code", "dt.int", "f", "t1", "t2", "status", "survey", "vload50")]
+dt.b <- as.Date(tmp$dt.int[1])				tmp$t2 <- as.numeric(tmp$dt.int - (dt.b - 180))				for(t in 2:nrow(tmp)) {					tmp$t1[t] <- max(c((tmp$t2[t-1] + 1), (tmp$t2[t] - 180)))					}				tmp$t1[1] <- c(0)#
+				tmp$flg <- c(0)#
+				while(sum(tmp$flg) < nrow(tmp)) {					srv <- min(tmp$survey[tmp$flg == 0])										if(tmp$vload50[tmp$survey == srv] == 1 & tmp$t1[tmp$survey == srv] == 0) {tmp$status[tmp$survey == srv] <- c(0); tmp$flg[tmp$survey == srv] <- c(1)}					if(tmp$vload50[tmp$survey == srv] == 1 & tmp$t1[tmp$survey == srv] > 0) {tmp$status[tmp$survey == srv] <- c(0); tmp$flg[tmp$survey == srv] <- c(1)}					if(tmp$vload50[tmp$survey == srv] == 0 & tmp$t1[tmp$survey == srv] > 0) {						tmp$status[tmp$survey == srv] <- c(1); tmp$flg[tmp$survey <= srv] <- c(1)						if(length(tmp$flg[tmp$flg == 0 & tmp$vload50 == 1]) == 0) {tmp$status[tmp$survey >= srv] <- c(NA); tmp$flg[tmp$survey >= srv] <- c(1)}						if(length(tmp$flg[tmp$flg == 0 & tmp$vload50 == 1]) > 0) {							nxt <- min(tmp$survey[tmp$flg == 0 & tmp$vload50 == 1])							tmp$status[tmp$survey > srv & tmp$survey < nxt] <- c(NA)							tmp$status[tmp$survey == nxt] <- c(0)							tmp$flg[tmp$survey <= nxt] <- c(1)							}												}					}
+tmp
+code <- sample(unique(ids$code[is.na(ids$bl) == FALSE]), 1)
+tmp <- evi[evi$code == code & evi$f == 1, c("code", "dt.int", "f", "t1", "t2", "status", "survey", "vload50")]
+dt.b <- as.Date(tmp$dt.int[1])				tmp$t2 <- as.numeric(tmp$dt.int - (dt.b - 180))				for(t in 2:nrow(tmp)) {					tmp$t1[t] <- max(c((tmp$t2[t-1] + 1), (tmp$t2[t] - 180)))					}				tmp$t1[1] <- c(0)#
+				tmp$flg <- c(0)#
+				while(sum(tmp$flg) < nrow(tmp)) {					srv <- min(tmp$survey[tmp$flg == 0])										if(tmp$vload50[tmp$survey == srv] == 1 & tmp$t1[tmp$survey == srv] == 0) {tmp$status[tmp$survey == srv] <- c(0); tmp$flg[tmp$survey == srv] <- c(1)}					if(tmp$vload50[tmp$survey == srv] == 1 & tmp$t1[tmp$survey == srv] > 0) {tmp$status[tmp$survey == srv] <- c(0); tmp$flg[tmp$survey == srv] <- c(1)}					if(tmp$vload50[tmp$survey == srv] == 0 & tmp$t1[tmp$survey == srv] > 0) {						tmp$status[tmp$survey == srv] <- c(1); tmp$flg[tmp$survey <= srv] <- c(1)						if(length(tmp$flg[tmp$flg == 0 & tmp$vload50 == 1]) == 0) {tmp$status[tmp$survey >= srv] <- c(NA); tmp$flg[tmp$survey >= srv] <- c(1)}						if(length(tmp$flg[tmp$flg == 0 & tmp$vload50 == 1]) > 0) {							nxt <- min(tmp$survey[tmp$flg == 0 & tmp$vload50 == 1])							tmp$status[tmp$survey > srv & tmp$survey < nxt] <- c(NA)							tmp$status[tmp$survey == nxt] <- c(0)							tmp$flg[tmp$survey <= nxt] <- c(1)							}												}					}
+tmp
+# t1, t2, status	evi$t1 <- c(NA); evi$t2 <- c(NA); evi$status <- c(NA)#
+		for(r in 1:nrow(ids)) {			if(is.na(ids$bl[r]) == TRUE) {next}			code <- ids$code[r]			# code <- sample(unique(ids$code[is.na(ids$bl) == FALSE]), 1)			tmp <- evi[evi$code == code & evi$f == 1, c("code", "dt.int", "f", "t1", "t2", "status", "survey", "vload50")]			if(nrow(tmp) == 1) {tmp$f <- c(0)}#
+			if(nrow(tmp) > 1) {				dt.b <- as.Date(tmp$dt.int[1])				tmp$t2 <- as.numeric(tmp$dt.int - (dt.b - 180))				for(t in 2:nrow(tmp)) {					tmp$t1[t] <- max(c((tmp$t2[t-1] + 1), (tmp$t2[t] - 180)))					}				tmp$t1[1] <- c(0)#
+				tmp$flg <- c(0)#
+				while(sum(tmp$flg) < nrow(tmp)) {					srv <- min(tmp$survey[tmp$flg == 0])										if(tmp$vload50[tmp$survey == srv] == 1 & tmp$t1[tmp$survey == srv] == 0) {tmp$status[tmp$survey == srv] <- c(0); tmp$flg[tmp$survey == srv] <- c(1)}					if(tmp$vload50[tmp$survey == srv] == 1 & tmp$t1[tmp$survey == srv] > 0) {tmp$status[tmp$survey == srv] <- c(0); tmp$flg[tmp$survey == srv] <- c(1)}					if(tmp$vload50[tmp$survey == srv] == 0 & tmp$t1[tmp$survey == srv] > 0) {						tmp$status[tmp$survey == srv] <- c(1); tmp$flg[tmp$survey <= srv] <- c(1)						if(length(tmp$flg[tmp$flg == 0 & tmp$vload50 == 1]) == 0) {tmp$status[tmp$survey >= srv] <- c(NA); tmp$flg[tmp$survey >= srv] <- c(1)}						if(length(tmp$flg[tmp$flg == 0 & tmp$vload50 == 1]) > 0) {							nxt <- min(tmp$survey[tmp$flg == 0 & tmp$vload50 == 1])							tmp$status[tmp$survey > srv & tmp$survey < nxt] <- c(NA)							tmp$status[tmp$survey == nxt] <- c(0)							tmp$flg[tmp$survey <= nxt] <- c(1)							}												}					}#
+			for(t in 1:nrow(tmp)) {				evi$f[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$f[t]				evi$t1[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$t1[t]				evi$t2[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$t2[t]									evi$status[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$status[t]								}			}
+# t1, t2, status	evi$t1 <- c(NA); evi$t2 <- c(NA); evi$status <- c(NA)#
+		for(r in 1:nrow(ids)) {			if(is.na(ids$bl[r]) == TRUE) {next}			code <- ids$code[r]			# code <- sample(unique(ids$code[is.na(ids$bl) == FALSE]), 1)			tmp <- evi[evi$code == code & evi$f == 1, c("code", "dt.int", "f", "t1", "t2", "status", "survey", "vload50")]			if(nrow(tmp) == 1) {tmp$f <- c(0)}#
+			if(nrow(tmp) > 1) {				dt.b <- as.Date(tmp$dt.int[1])				tmp$t2 <- as.numeric(tmp$dt.int - (dt.b - 180))				for(t in 2:nrow(tmp)) {					tmp$t1[t] <- max(c((tmp$t2[t-1] + 1), (tmp$t2[t] - 180)))					}				tmp$t1[1] <- c(0)#
+				tmp$flg <- c(0)#
+				while(sum(tmp$flg) < nrow(tmp)) {					srv <- min(tmp$survey[tmp$flg == 0])										if(tmp$vload50[tmp$survey == srv] == 1 & tmp$t1[tmp$survey == srv] == 0) {tmp$status[tmp$survey == srv] <- c(0); tmp$flg[tmp$survey == srv] <- c(1)}					if(tmp$vload50[tmp$survey == srv] == 1 & tmp$t1[tmp$survey == srv] > 0) {tmp$status[tmp$survey == srv] <- c(0); tmp$flg[tmp$survey == srv] <- c(1)}					if(tmp$vload50[tmp$survey == srv] == 0 & tmp$t1[tmp$survey == srv] > 0) {						tmp$status[tmp$survey == srv] <- c(1); tmp$flg[tmp$survey <= srv] <- c(1)						if(length(tmp$flg[tmp$flg == 0 & tmp$vload50 == 1]) == 0) {tmp$status[tmp$survey >= srv] <- c(NA); tmp$flg[tmp$survey >= srv] <- c(1)}						if(length(tmp$flg[tmp$flg == 0 & tmp$vload50 == 1]) > 0) {							nxt <- min(tmp$survey[tmp$flg == 0 & tmp$vload50 == 1])							tmp$status[tmp$survey > srv & tmp$survey < nxt] <- c(NA)							tmp$status[tmp$survey == nxt] <- c(0)							tmp$flg[tmp$survey <= nxt] <- c(1)							}												}					}#
+			for(t in 1:nrow(tmp)) {				evi$f[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$f[t]				evi$t1[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$t1[t]				evi$t2[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$t2[t]									evi$status[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$status[t]								}			}		}
+evi[evi$code == sample(unique(evi$code), 1), c("code", "dt.int", "f", "t1", "t2", "status", "survey", "vload50")]
+coxph(Surv(t1, t2, status) ~ as.factor(gender), data = evi)
+names(evi)
+coxph(Surv(t1, t2, status) ~ as.factor(homeless_l6m), data = evi)
+coxph(Surv(t1, t2, status) ~ as.factor(evicted_l6m), data = evi)
+gee(vload50 ~ evicted_l6m, data = evi, id = code, family = binomial, corstr = "exchangeable")
+summary(gee(vload50 ~ evicted_l6m, data = evi, id = code, family = binomial, corstr = "exchangeable"))$tTable
+summary(gee(vload50 ~ evicted_l6m, data = evi, id = code, family = binomial, corstr = "exchangeable"))
+names(summary(gee(vload50 ~ evicted_l6m, data = evi, id = code, family = binomial, corstr = "exchangeable")))
+summary(gee(vload50 ~ evicted_l6m, data = evi, id = code, family = binomial, corstr = "exchangeable"))$coefficients
+exp(-0.477)
+ls()
+aav0
+names(aav0)[substr(names(aav0), 1, 3) == "A20"]
+table(aav0$A20_SLEEP_LNGHT)
+head(names(aav0))
+srv0 <- aav0[is.na(aav$ACCESS_CODE) == FALSE, c("ACCESS_CODE", "A20_SLEEP_LNGHT")]; srv0$survey <- c(0)
+srv0 <- aav0[is.na(aav0$ACCESS_CODE) == FALSE, c("ACCESS_CODE", "A20_SLEEP_LNGHT")]; srv0$survey <- c(0)
+head(srv0)
+table(evi$survey)
+ls()
+ls()[substr(ls(), 1, 3) == "aav"]
+summary(gee(vload50 ~ as.factor(evicted_l6m) + as.factor(homeless_l6m), data = evi, id = code, family = binomial, corstr = "exchangeable"))$coefficients
+names(evi)
+coxph(Surv(t1, t2, status) ~ as.factor(mmt_l6m), data = evi)
+gee(vload50 ~ mmt_l6m, id = code, data = evi, family = binomial, corstr = "exchangeable")
+summary(gee(vload50 ~ mmt_l6m, id = code, data = evi, family = binomial, corstr = "exchangeable"))$coefficients
+library(gee)library(epitools)rm(list = ls())load("~/Documents/1st/A_u9/A_u9-001")	#
+# acc$tvl :: Days above VL 1500; acc$fup :: Days in observation period	acc$tvl <- c(NA)	acc$fup <- c(NA)#
+		aids <- unique(acc$ACCESS_CODE)#
+		for(i in 1:length(aids)) {			# i <- sample(1:length(aids), 1)			aid <- aids[i]#
+			pvl <- dp[dp$ACCESS_CODE == aid, ]				pvl <- pvl[order(pvl$dt.tst), c("ACCESS_CODE", "dt.tst", "VLOAD")]#
+			if(nrow(pvl) == 0) {next}#
+			tmp <- as.data.frame(matrix(NA, 					nrow = length(as.Date(c(as.Date(min(pvl$dt.tst)):as.Date(max(pvl$dt.tst))), origin = "1970-01-01")),					ncol = 4))				names(tmp) <- c("ACCESS_CODE", "dt.tst", "VLOAD", "f")					tmp$ACCESS_CODE <- pvl$ACCESS_CODE[1]					tmp$dt.tst <- as.Date(c(as.Date(min(pvl$dt.tst)):as.Date(max(pvl$dt.tst))), origin = "1970-01-01")#
+				for(f in 1:nrow(pvl)) {					tmp$dt.tst[tmp$dt.tst == pvl$dt.tst[f]] <- as.Date(pvl$dt.tst[f])					tmp$f[tmp$dt.tst == pvl$dt.tst[f]] <- c(1)					tmp$VLOAD[tmp$dt.tst == pvl$dt.tst[f]] <- pvl$VLOAD[f]					}					tmp$f[is.na(tmp$f) == TRUE] <- c(0)#
+				if(nrow(tmp) > 1) {					for(f in 1:(nrow(pvl)-1)) {						dt.str <- as.Date(pvl$dt.tst[f])						dt.end <- as.Date(pvl$dt.tst[f+1])						lngth <- nrow(tmp[tmp$dt.tst >= dt.str & tmp$dt.tst <= dt.end, ])						tmp$VLOAD[tmp$dt.tst >= dt.str & tmp$dt.tst <= dt.end] <- 							seq(tmp$VLOAD[tmp$dt.tst == dt.str], tmp$VLOAD[tmp$dt.tst == dt.end],							length.out = lngth)						}				}#
+				tmp$vl1500 <- ifelse(tmp$VLOAD > 1500, 1, 0)#
+			fup <- acc[acc$ACCESS_CODE == aid, c("ACCESS_CODE", "dt.int", "fa", "tvl", "fup")]				fup <- fup[fup$dt.int >= (as.Date(min(pvl$dt.tst)) - 180), ]#
+			if(nrow(fup) > 0) {				for(f in 1:nrow(fup)) {					if(f == 1) {dt.str <- as.Date(fup$dt.int[f]) - 180}					if(f > 1) {dt.str <- as.Date(max(c(fup$dt.int[f-1], fup$dt.int[f]-180)))}						dt.end <- as.Date(fup$dt.int[f])						fup$tvl[f] <- sum(tmp$vl1500[tmp$dt.tst > dt.str & tmp$dt.tst <= dt.end])						fup$fup[f] <- as.numeric(dt.end - dt.str)				}			}#
+			for(f in 1:nrow(fup)) {				acc$tvl[acc$ACCESS_CODE == fup$ACCESS_CODE[f] & acc$fa == fup$fa[f]] <- fup$tvl[f]				acc$fup[acc$ACCESS_CODE == fup$ACCESS_CODE[f] & acc$fa == fup$fa[f]] <- fup$fup[f]				}			print(round((i/length(aids)) * 100, 1))		}	acc <- acc[acc$a == 1, ]	acc <- acc[is.na(acc$tvl) == FALSE, ]	# acc[acc$ACCESS_CODE == sample(unique(acc$ACCESS_CODE), 1), c("ACCESS_CODE", "dt.int", "fa", "pvl", "tvl")]	acc$base <- c(0)		for(i in 1:length(unique(acc$ACCESS_CODE))) {			aid <- unique(acc$ACCESS_CODE)[i]			acc$base[acc$ACCESS_CODE == aid & acc$fa == min(acc$fa[acc$ACCESS_CODE == aid])] <- c(1)			}#
+	rateratio(ratetable(sum(acc$tvl[acc$base == 1 & acc$herofreq == 0]), sum(acc$tvl[acc$base == 1 & acc$herofreq == 1]), 			  sum(acc$fup[acc$base == 1 & acc$herofreq == 0]), sum(acc$fup[acc$base == 1 & acc$herofreq == 1])))	acc$c00.init <- c(NA)		aids <- unique(acc$ACCESS_CODE)			for(i in 1:length(aids)) {				aid <- aids[i]				# aid <- sample(aids, 1)				dt.init <- as.Date(min(da$dt.str[da$ACCESS_CODE == aid]))					cd4 <- dc[dc$ACCESS_CODE == aid & dc$dt.tst <= dt.init, ]					if(nrow(cd4) > 0) {acc$c00.init[acc$ACCESS_CODE == aid] <- 						cd4$c00[cd4$dt.tst == max(cd4$dt.tst)]; next}					}					acc$c00.init[is.na(acc$c00.init) == TRUE] <- mean(acc$c00.init[is.na(acc$c00.init) == FALSE])#
+	acc$tvl.pct <- as.integer((acc$tvl/acc$fup) * 100)		acc$age_b[is.na(acc$age_b) == TRUE] <- mean(acc$age_b, na.rm = TRUE)		acc$gender[is.na(acc$gender) == TRUE] <- c(0)		acc$unstable[is.na(acc$unstable) == TRUE] <- c(0)		acc$rel[is.na(acc$rel) == TRUE] <- c(0)		acc$edu[is.na(acc$edu) == TRUE] <- c(0)		acc$cokefreq[is.na(acc$cokefreq) == TRUE] <- c(0)				acc$cracfreq[is.na(acc$cracfreq) == TRUE] <- c(0)		acc$emp[is.na(acc$emp) == TRUE] <- c(0)#
+	acc$nstbl.f <- as.factor(acc$unstable)	acc$rel.f <- as.factor(acc$rel)	acc$edu.f <- as.factor(acc$edu)	acc$jail.f <- as.factor(acc$jail)	acc$hero.f <- as.factor(acc$herofreq)	acc$coke.f <- as.factor(acc$cokefreq)	acc$mmt.f <- as.factor(acc$mmt)	acc$crac.f <- as.factor(acc$cracfreq)	acc$emp.f <- as.factor(acc$employ)	acc$gndr.f <- as.factor(acc$gender_tr == "M")	acc$cauc.f <- as.factor(acc$white)	acc$age.n <- as.numeric(acc$age_b)	acc$y.n <- as.numeric(substr(as.character(acc$dt.int), 1, 4))#
+# Factors associated with time above VL 1500 among ART-exposed	covars <- c("dtes.f", "hless.f", "rel.f", "edu.f", "jail.f", "hero.f", "coke.f", 				"mmt.f", "crac.f", "emp.f", "gndr.f", "cauc.f", "age.n", "y.n")	outcome <- c("tvl.pct")	acc <- acc[order(acc$ACCESS_CODE, acc$fa), ]	uv <- as.data.frame(matrix(NA, nrow = 1, ncol = 5))		colnames(uv) <- c("covar", "rr", "low", "upp", "p")#
+	for(r in 1:length(covars)) {		if(class(acc[, covars[r]]) == "factor") {			mdl <- gee(as.formula(paste(outcome, " ~ as.factor(", covars[r], ")")),					id = ACCESS_CODE, data = acc[acc$a == 1, ], family = poisson, corstr = "exchangeable")}		if(class(acc[, covars[r]]) == "numeric") {			mdl <- gee(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ")")),					id = ACCESS_CODE, data = acc[acc$a == 1, ], family = poisson, corstr = "exchangeable")}#
+		lvls <- c(length(coef(mdl)) - 1)		tmp <- as.data.frame(matrix(NA, nrow = lvls, ncol = 5))			colnames(tmp) <- c("covar", "rr", "low", "upp", "p")#
+		b <- summary(mdl)$coef[2:nrow(summary(mdl)$coef), 1]		se <- summary(mdl)$coef[2:nrow(summary(mdl)$coef), 4]#
+			tmp$covar <- covars[r]			tmp$rr <- round(exp(b), 2)			tmp$low <- round(exp(b - (1.96 * se)), 2)			tmp$upp <- round(exp(b + (1.96 * se)), 2)			tmp$p <- round(2 * pnorm(-abs(b/se)), 3)#
+		uv <- rbind(uv, tmp)					}		uv <- uv[2:nrow(uv), ]		print(uv)
+covars <- c("dtes.f", "hless.f", "rel.f", "edu.f", "jail.f", "hero.f", "coke.f", 				"mmt.f", "crac.f", "emp.f", "gndr.f", "cauc.f", "age.n", "y.n")
+outcome <- c("tvl.pct")
+acc <- acc[order(acc$ACCESS_CODE, acc$fa), ]
+uv <- as.data.frame(matrix(NA, nrow = 1, ncol = 5))		colnames(uv) <- c("covar", "rr", "low", "upp", "p")
+for(r in 1:length(covars)) {		if(class(acc[, covars[r]]) == "factor") {			mdl <- gee(as.formula(paste(outcome, " ~ as.factor(", covars[r], ")")),					id = ACCESS_CODE, data = acc[acc$a == 1, ], family = poisson, corstr = "exchangeable")}		if(class(acc[, covars[r]]) == "numeric") {			mdl <- gee(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ")")),					id = ACCESS_CODE, data = acc[acc$a == 1, ], family = poisson, corstr = "exchangeable")}#
+		lvls <- c(length(coef(mdl)) - 1)		tmp <- as.data.frame(matrix(NA, nrow = lvls, ncol = 5))			colnames(tmp) <- c("covar", "rr", "low", "upp", "p")#
+		b <- summary(mdl)$coef[2:nrow(summary(mdl)$coef), 1]		se <- summary(mdl)$coef[2:nrow(summary(mdl)$coef), 4]#
+			tmp$covar <- covars[r]			tmp$rr <- round(exp(b), 2)			tmp$low <- round(exp(b - (1.96 * se)), 2)			tmp$upp <- round(exp(b + (1.96 * se)), 2)			tmp$p <- round(2 * pnorm(-abs(b/se)), 3)#
+		uv <- rbind(uv, tmp)					}
+covars
+acc$dtes.f
+acc$dtes.f <- as.factor(acc$dtes)
+# Factors associated with time above VL 1500 among ART-exposed	covars <- c("dtes.f", "hless.f", "rel.f", "edu.f", "jail.f", "hero.f", "coke.f", 				"mmt.f", "crac.f", "emp.f", "gndr.f", "cauc.f", "age.n", "y.n")	outcome <- c("tvl.pct")	acc <- acc[order(acc$ACCESS_CODE, acc$fa), ]	uv <- as.data.frame(matrix(NA, nrow = 1, ncol = 5))		colnames(uv) <- c("covar", "rr", "low", "upp", "p")#
+	for(r in 1:length(covars)) {		if(class(acc[, covars[r]]) == "factor") {			mdl <- gee(as.formula(paste(outcome, " ~ as.factor(", covars[r], ")")),					id = ACCESS_CODE, data = acc[acc$a == 1, ], family = poisson, corstr = "exchangeable")}		if(class(acc[, covars[r]]) == "numeric") {			mdl <- gee(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ")")),					id = ACCESS_CODE, data = acc[acc$a == 1, ], family = poisson, corstr = "exchangeable")}#
+		lvls <- c(length(coef(mdl)) - 1)		tmp <- as.data.frame(matrix(NA, nrow = lvls, ncol = 5))			colnames(tmp) <- c("covar", "rr", "low", "upp", "p")#
+		b <- summary(mdl)$coef[2:nrow(summary(mdl)$coef), 1]		se <- summary(mdl)$coef[2:nrow(summary(mdl)$coef), 4]#
+			tmp$covar <- covars[r]			tmp$rr <- round(exp(b), 2)			tmp$low <- round(exp(b - (1.96 * se)), 2)			tmp$upp <- round(exp(b + (1.96 * se)), 2)			tmp$p <- round(2 * pnorm(-abs(b/se)), 3)#
+		uv <- rbind(uv, tmp)					}		uv <- uv[2:nrow(uv), ]		print(uv)
+acc$hless.f <- as.factor(acc$hless)
+names(acc)
+acc$hless.f <- as.factor(acc$homeless)
+# Factors associated with time above VL 1500 among ART-exposed	covars <- c("dtes.f", "hless.f", "rel.f", "edu.f", "jail.f", "hero.f", "coke.f", 				"mmt.f", "crac.f", "emp.f", "gndr.f", "cauc.f", "age.n", "y.n")	outcome <- c("tvl.pct")	acc <- acc[order(acc$ACCESS_CODE, acc$fa), ]	uv <- as.data.frame(matrix(NA, nrow = 1, ncol = 5))		colnames(uv) <- c("covar", "rr", "low", "upp", "p")#
+	for(r in 1:length(covars)) {		if(class(acc[, covars[r]]) == "factor") {			mdl <- gee(as.formula(paste(outcome, " ~ as.factor(", covars[r], ")")),					id = ACCESS_CODE, data = acc[acc$a == 1, ], family = poisson, corstr = "exchangeable")}		if(class(acc[, covars[r]]) == "numeric") {			mdl <- gee(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ")")),					id = ACCESS_CODE, data = acc[acc$a == 1, ], family = poisson, corstr = "exchangeable")}#
+		lvls <- c(length(coef(mdl)) - 1)		tmp <- as.data.frame(matrix(NA, nrow = lvls, ncol = 5))			colnames(tmp) <- c("covar", "rr", "low", "upp", "p")#
+		b <- summary(mdl)$coef[2:nrow(summary(mdl)$coef), 1]		se <- summary(mdl)$coef[2:nrow(summary(mdl)$coef), 4]#
+			tmp$covar <- covars[r]			tmp$rr <- round(exp(b), 2)			tmp$low <- round(exp(b - (1.96 * se)), 2)			tmp$upp <- round(exp(b + (1.96 * se)), 2)			tmp$p <- round(2 * pnorm(-abs(b/se)), 3)#
+		uv <- rbind(uv, tmp)					}		uv <- uv[2:nrow(uv), ]		print(uv)
+names(acc)
+str(acc$c00.init)
+covars <- c("mmt.f", "age.n", "gndr.f", "cauc.f", "coke.f", "crac.f", "emp.f", "rel.f", "nstbl.f",				"edu.f", "c00.init")#
+	outcome <- c("tvl.pct")	acc <- acc[order(acc$ACCESS_CODE, acc$fa), ]	uv <- as.data.frame(matrix(NA, nrow = 1, ncol = 5))		colnames(uv) <- c("covar", "rr", "low", "upp", "p")#
+	for(r in 1:length(covars)) {		if(class(acc[, covars[r]]) == "factor") {			mdl <- gee(as.formula(paste(outcome, " ~ as.factor(", covars[r], ")")),					id = ACCESS_CODE, data = acc[acc$a == 1, ], family = poisson, corstr = "exchangeable")}		if(class(acc[, covars[r]]) == "numeric") {			mdl <- gee(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ")")),					id = ACCESS_CODE, data = acc[acc$a == 1, ], family = poisson, corstr = "exchangeable")}#
+		lvls <- c(length(coef(mdl)) - 1)		tmp <- as.data.frame(matrix(NA, nrow = lvls, ncol = 5))			colnames(tmp) <- c("covar", "rr", "low", "upp", "p")#
+		b <- summary(mdl)$coef[2:nrow(summary(mdl)$coef), 1]		se <- summary(mdl)$coef[2:nrow(summary(mdl)$coef), 4]#
+			tmp$covar <- covars[r]			tmp$rr <- round(exp(b), 2)			tmp$low <- round(exp(b - (1.96 * se)), 2)			tmp$upp <- round(exp(b + (1.96 * se)), 2)			tmp$p <- round(2 * pnorm(-abs(b/se)), 3)#
+		uv <- rbind(uv, tmp)					}		uv <- uv[2:nrow(uv), ]		print(uv)
+names(aav0)[substr(names(aav0), 1, 3) == "C01"]
+rm(list = ls())load("~/Documents/1st/A_u9/A_u9-001")	evi <- as.data.frame(read.csv("~/Documents/Research/Analyses/A_evict/Final_evi.csv"), stringsAsFactors = FALSE)
+ids <- as.data.frame(matrix(NA, nrow = length(unique(evi$code)), ncol = 2))	names(ids) <- c("code", "bl")	ids$code <- unique(evi$code)#
+	for(r in 1:nrow(ids)) {			code <- ids$code[r]		if(sum(evi$vload50[evi$code == code]) == 0) {next}		ids$bl[r] <- min(evi$survey[evi$code == code & evi$vload50 == 1])		}	evi$f <- c(0)		for(r in 1:nrow(ids)) {			if(is.na(ids$bl[r]) == TRUE) {next}			evi$f[evi$code == ids$code[r] & evi$survey >= ids$bl[r]] <- c(1)			}#
+	evi$dt.int <- as.Date(as.character(evi$int_date), "%d%b%Y")# t1, t2, status	evi$t1 <- c(NA); evi$t2 <- c(NA); evi$status <- c(NA)#
+		for(r in 1:nrow(ids)) {			if(is.na(ids$bl[r]) == TRUE) {next}			code <- ids$code[r]			# code <- sample(unique(ids$code[is.na(ids$bl) == FALSE]), 1)			tmp <- evi[evi$code == code & evi$f == 1, c("code", "dt.int", "f", "t1", "t2", "status", "survey", "vload50")]			if(nrow(tmp) == 1) {tmp$f <- c(0)}#
+			if(nrow(tmp) > 1) {				dt.b <- as.Date(tmp$dt.int[1])				tmp$t2 <- as.numeric(tmp$dt.int - (dt.b - 180))				for(t in 2:nrow(tmp)) {					tmp$t1[t] <- max(c((tmp$t2[t-1] + 1), (tmp$t2[t] - 180)))					}				tmp$t1[1] <- c(0)#
+				tmp$flg <- c(0)#
+				while(sum(tmp$flg) < nrow(tmp)) {					srv <- min(tmp$survey[tmp$flg == 0])										if(tmp$vload50[tmp$survey == srv] == 1 & tmp$t1[tmp$survey == srv] == 0) {tmp$status[tmp$survey == srv] <- c(0); tmp$flg[tmp$survey == srv] <- c(1)}					if(tmp$vload50[tmp$survey == srv] == 1 & tmp$t1[tmp$survey == srv] > 0) {tmp$status[tmp$survey == srv] <- c(0); tmp$flg[tmp$survey == srv] <- c(1)}					if(tmp$vload50[tmp$survey == srv] == 0 & tmp$t1[tmp$survey == srv] > 0) {						tmp$status[tmp$survey == srv] <- c(1); tmp$flg[tmp$survey <= srv] <- c(1)						if(length(tmp$flg[tmp$flg == 0 & tmp$vload50 == 1]) == 0) {tmp$status[tmp$survey >= srv] <- c(NA); tmp$flg[tmp$survey >= srv] <- c(1)}						if(length(tmp$flg[tmp$flg == 0 & tmp$vload50 == 1]) > 0) {							nxt <- min(tmp$survey[tmp$flg == 0 & tmp$vload50 == 1])							tmp$status[tmp$survey > srv & tmp$survey < nxt] <- c(NA)							tmp$status[tmp$survey == nxt] <- c(0)							tmp$flg[tmp$survey <= nxt] <- c(1)							}												}					}#
+			for(t in 1:nrow(tmp)) {				evi$f[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$f[t]				evi$t1[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$t1[t]				evi$t2[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$t2[t]									evi$status[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$status[t]								}			}		}
+names(evi)
+library(lme4)
+glmer(vload50 ~ as.factor(evicted_l6m) + (survey|code), data = evi, family = binomial)
+coefficient(glmer(vload50 ~ as.factor(evicted_l6m) + (survey|code), data = evi, family = binomial))
+coefficients(glmer(vload50 ~ as.factor(evicted_l6m) + (survey|code), data = evi, family = binomial))
+summary(glmer(vload50 ~ as.factor(evicted_l6m) + (survey|code), data = evi, family = binomial))
+evi$evi2 <- c(0)	evi$evi2[evi$evicted_l6m == 1 & evi$homeless_l6m == 1] <- c(1)
+summary(glmer(vload50 ~ as.factor(evi2) + (survey|code), data = evi, family = binomial))
+exp(-0.7568)
+names(evi)
+evi$age.n <- as.numeric(evi$evi$age_b)evi$dtes.f <- as.factor(evi$dtes_l6mevi$rel.f <- as.factor(evi$relationshipevi$edu.f <- as.factor(evi$education_revevi$ninj.f <- as.factor(evi$daily_drug_noninj_l6mevi$inj.f <- as.factor(evi$daily_inj_l6mevi$employ.f <- as.factor(evi$mmt_l6memployment_l6mevi$iinc.f <- as.factor(evi$illigal_inc_l6mevi$balc.f <- as.factor(evi$binge_alcohol_l6mevi$gndr.f <- as.factor(evi$gender            evi$cauc.f <- as.factor(evi$whiteevi$p50.f <- as.factor(evi$vload50evi$a95.f <- as.factor(evi$adh95evi$c00.n <- as.numeric(cevi$d4_p100_l6m)evi$mdxp.f <- as.factor(evi$MD_exper)
+evi$age.n <- as.numeric(evi$evi$age_b)evi$dtes.f <- as.factor(evi$dtes_l6m)evi$rel.f <- as.factor(evi$relationship)evi$edu.f <- as.factor(evi$education_rev)evi$ninj.f <- as.factor(evi$daily_drug_noninj_l6m)evi$inj.f <- as.factor(evi$daily_inj_l6m)evi$employ.f <- as.factor(evi$mmt_l6memployment_l6m)evi$iinc.f <- as.factor(evi$illigal_inc_l6m)evi$balc.f <- as.factor(evi$binge_alcohol_l6m)evi$gndr.f <- as.factor(evi$gender)       evi$cauc.f <- as.factor(evi$white)evi$p50.f <- as.factor(evi$vload50)evi$a95.f <- as.factor(evi$adh95)evi$c00.n <- as.numeric(cevi$d4_p100_l6m)evi$mdxp.f <- as.factor(evi$MD_exper)
+evi$age.n <- as.numeric(evi$evi$age_b)evi$dtes.f <- as.factor(evi$dtes_l6m)evi$rel.f <- as.factor(evi$relationship)evi$edu.f <- as.factor(evi$education_rev)evi$ninj.f <- as.factor(evi$daily_drug_noninj_l6m)evi$inj.f <- as.factor(evi$daily_inj_l6m)evi$mmt.f <- as.factor(evi$mmt_l6m)evi$employ.f <- as.factor(evi$employment_l6m)evi$iinc.f <- as.factor(evi$illigal_inc_l6m)evi$balc.f <- as.factor(evi$binge_alcohol_l6m)evi$gndr.f <- as.factor(evi$gender)       evi$cauc.f <- as.factor(evi$white)evi$p50.f <- as.factor(evi$vload50)evi$a95.f <- as.factor(evi$adh95)evi$c00.n <- as.numeric(cevi$d4_p100_l6m)evi$mdxp.f <- as.factor(evi$MD_exper)
+evi$age.n <- as.numeric(evi$evi$age_b)evi$dtes.f <- as.factor(evi$dtes_l6m)evi$rel.f <- as.factor(evi$relationship)evi$edu.f <- as.factor(evi$education_rev)evi$ninj.f <- as.factor(evi$daily_drug_noninj_l6m)evi$inj.f <- as.factor(evi$daily_inj_l6m)evi$mmt.f <- as.factor(evi$mmt_l6m)evi$employ.f <- as.factor(evi$employment_l6m)evi$iinc.f <- as.factor(evi$illigal_inc_l6m)evi$balc.f <- as.factor(evi$binge_alcohol_l6m)evi$gndr.f <- as.factor(evi$gender)       evi$cauc.f <- as.factor(evi$white)evi$p50.f <- as.factor(evi$vload50)evi$a95.f <- as.factor(evi$adh95)evi$c00.n <- as.numeric(evi$d4_p100_l6m)evi$mdxp.f <- as.factor(evi$MD_exper)
+evi$age.n <- as.numeric(evi$evi$age_b)evi$dtes.f <- as.factor(evi$dtes_l6m)evi$rel.f <- as.factor(evi$relationship)evi$edu.f <- as.factor(evi$education_rev)evi$ninj.f <- as.factor(evi$daily_drug_noninj_l6m)evi$inj.f <- as.factor(evi$daily_inj_l6m)evi$mmt.f <- as.factor(evi$mmt_l6m)evi$employ.f <- as.factor(evi$employment_l6m)evi$iinc.f <- as.factor(evi$illigal_inc_l6m)evi$balc.f <- as.factor(evi$binge_alcohol_l6m)evi$gndr.f <- as.factor(evi$gender)       evi$cauc.f <- as.factor(evi$white)evi$p50.f <- as.factor(evi$vload50)evi$a95.f <- as.factor(evi$adh95)evi$c00.n <- as.numeric(evi$cd4_p100_l6m)evi$mdxp.f <- as.factor(evi$MD_exper)
+covars <- c("evi2", "age.n", "dtes.f", "rel.f", "edu.f", "ninj.f", "inj.f", "mmt.f", "employ.f",				"iinc.f", "balc.f", "gndr.f", "cauc.f", "a95.f", "c00.n", "mdxp.f")
+outcome <- c("p50.f")
+covars <- c("evi2", "age.n", "dtes.f", "rel.f", "edu.f", "ninj.f", "inj.f", "mmt.f", "employ.f",				"iinc.f", "balc.f", "gndr.f", "cauc.f", "a95.f", "c00.n", "mdxp.f")#
+	outcome <- c("p50.f")#
+	uv <- as.data.frame(matrix(NA, nrow = 1, ncol = 5))		colnames(uv) <- c("covar", "rr", "low", "upp", "p")	for(r in 1:length(covars)) {		if(class(evi[, covars[r]]) == "factor") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.factor(", covars[r], ") + (survey | code)")),					data = evi, family = binomial)}		if(class(evi[, covars[r]]) == "numeric") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ") + (survey | code)")),					data = evi, family = binomial)}#
+		lvls <- c(length(fixef(mdl)) - 1)		tmp <- as.data.frame(matrix(NA, nrow = lvls, ncol = 5))			colnames(tmp) <- c("covar", "or", "low", "upp", "p")#
+		b <- fixef(mdl)[2:length(fixef(mdl))]		se <- se.fixef(mdl)[2:length(se.fixef(mdl))]		#
+			tmp$covar <- covars[r]			tmp$or <- round(exp(b), 2)			tmp$low <- round(exp(b - (1.96 * se)), 2)			tmp$upp <- round(exp(b + (1.96 * se)), 2)			tmp$p <- round(2 * pt(-abs(b/se), df = nrow(acc) - 1), 3)#
+		uv <- rbind(uv, tmp)					}		uv <- uv[2:nrow(uv), ]		print(uv)
+library(lme4)library(influence.ME)
+evi$age.n <- as.numeric(evi$evi$age_b)evi$dtes.f <- as.factor(evi$dtes_l6m)evi$rel.f <- as.factor(evi$relationship)evi$edu.f <- as.factor(evi$education_rev)evi$ninj.f <- as.factor(evi$daily_drug_noninj_l6m)evi$inj.f <- as.factor(evi$daily_inj_l6m)evi$mmt.f <- as.factor(evi$mmt_l6m)evi$employ.f <- as.factor(evi$employment_l6m)evi$iinc.f <- as.factor(evi$illigal_inc_l6m)evi$balc.f <- as.factor(evi$binge_alcohol_l6m)evi$gndr.f <- as.factor(evi$gender)       evi$cauc.f <- as.factor(evi$white)evi$p50.f <- as.factor(evi$vload50)evi$a95.f <- as.factor(evi$adh95)evi$c00.n <- as.numeric(evi$cd4_p100_l6m)evi$mdxp.f <- as.factor(evi$MD_exper)	covars <- c("evi2", "age.n", "dtes.f", "rel.f", "edu.f", "ninj.f", "inj.f", "mmt.f", "employ.f",				"iinc.f", "balc.f", "gndr.f", "cauc.f", "a95.f", "c00.n", "mdxp.f")#
+	outcome <- c("p50.f")#
+	uv <- as.data.frame(matrix(NA, nrow = 1, ncol = 5))		colnames(uv) <- c("covar", "rr", "low", "upp", "p")	for(r in 1:length(covars)) {		if(class(evi[, covars[r]]) == "factor") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.factor(", covars[r], ") + (survey | code)")),					data = evi, family = binomial)}		if(class(evi[, covars[r]]) == "numeric") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ") + (survey | code)")),					data = evi, family = binomial)}#
+		lvls <- c(length(fixef(mdl)) - 1)		tmp <- as.data.frame(matrix(NA, nrow = lvls, ncol = 5))			colnames(tmp) <- c("covar", "or", "low", "upp", "p")#
+		b <- fixef(mdl)[2:length(fixef(mdl))]		se <- se.fixef(mdl)[2:length(se.fixef(mdl))]		#
+			tmp$covar <- covars[r]			tmp$or <- round(exp(b), 2)			tmp$low <- round(exp(b - (1.96 * se)), 2)			tmp$upp <- round(exp(b + (1.96 * se)), 2)			tmp$p <- round(2 * pt(-abs(b/se), df = nrow(acc) - 1), 3)#
+		uv <- rbind(uv, tmp)					}		uv <- uv[2:nrow(uv), ]		print(uv)
+mdl
+evi$age.n <- as.numeric(evi$evi$age_b)evi$dtes.f <- as.factor(evi$dtes_l6m)evi$rel.f <- as.factor(evi$relationship)evi$edu.f <- as.factor(evi$education_rev)evi$ninj.f <- as.factor(evi$daily_drug_noninj_l6m)evi$inj.f <- as.factor(evi$daily_inj_l6m)evi$mmt.f <- as.factor(evi$mmt_l6m)evi$employ.f <- as.factor(evi$employment_l6m)evi$iinc.f <- as.factor(evi$illigal_inc_l6m)evi$balc.f <- as.factor(evi$binge_alcohol_l6m)evi$gndr.f <- as.factor(evi$gender)       evi$cauc.f <- as.factor(evi$white)evi$p50.f <- as.factor(ifelse(evi$vload50 == 0, 1, 0))evi$a95.f <- as.factor(evi$adh95)evi$c00.n <- as.numeric(evi$cd4_p100_l6m)evi$mdxp.f <- as.factor(evi$MD_exper)
+evi$age.n <- as.numeric(evi$age_b)evi$dtes.f <- as.factor(evi$dtes_l6m)evi$rel.f <- as.factor(evi$relationship)evi$edu.f <- as.factor(evi$education_rev)evi$ninj.f <- as.factor(evi$daily_drug_noninj_l6m)evi$inj.f <- as.factor(evi$daily_inj_l6m)evi$mmt.f <- as.factor(evi$mmt_l6m)evi$employ.f <- as.factor(evi$employment_l6m)evi$iinc.f <- as.factor(evi$illigal_inc_l6m)evi$balc.f <- as.factor(evi$binge_alcohol_l6m)evi$gndr.f <- as.factor(evi$gender)       evi$cauc.f <- as.factor(evi$white)evi$p50.f <- as.factor(ifelse(evi$vload50 == 0, 1, 0))evi$a95.f <- as.factor(evi$adh95)evi$c00.n <- as.numeric(evi$cd4_p100_l6m)evi$mdxp.f <- as.factor(evi$MD_exper)
+table(evi$p50.v)
+table(evi$p50.f)
+table(evi$p50.f, evi$vload50)
+evi$p50.f <- as.factor(ifelse(evi$vload50 == 1, 1, 0))
+table(evi$p50.f, evi$vload50)
+evi$p50.f <- as.factor(ifelse(evi$vload50 == 0, 1, 0))
+covars <- c("evi2", "age.n", "dtes.f", "rel.f", "edu.f", "ninj.f", "inj.f", "mmt.f", "employ.f",				"iinc.f", "balc.f", "gndr.f", "cauc.f", "a95.f", "c00.n", "mdxp.f")#
+	outcome <- c("p50.f")#
+	uv <- as.data.frame(matrix(NA, nrow = 1, ncol = 5))		colnames(uv) <- c("covar", "or", "low", "upp", "p")	for(r in 1:length(covars)) {		if(class(evi[, covars[r]]) == "factor") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.factor(", covars[r], ") + (survey | code)")),					data = evi, family = binomial)}		if(class(evi[, covars[r]]) == "numeric") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ") + (survey | code)")),					data = evi, family = binomial)}#
+		lvls <- c(length(fixef(mdl)) - 1)		tmp <- as.data.frame(matrix(NA, nrow = lvls, ncol = 5))			colnames(tmp) <- c("covar", "or", "low", "upp", "p")#
+		b <- fixef(mdl)[2:length(fixef(mdl))]		se <- se.fixef(mdl)[2:length(se.fixef(mdl))]		#
+			tmp$covar <- covars[r]			tmp$or <- round(exp(b), 2)			tmp$low <- round(exp(b - (1.96 * se)), 2)			tmp$upp <- round(exp(b + (1.96 * se)), 2)			tmp$p <- round(2 * pt(-abs(b/se), df = nrow(acc) - 1), 3)#
+		uv <- rbind(uv, tmp)					}		uv <- uv[2:nrow(uv), ]		print(uv)
+evi$evi2.f <- as.factor(evi$evi2)
+covars <- uv$covar[uv$p < 0.5 & uv$covar != "evi2.f" & uv$covar != "a95.f"]
+covars
+### MV CONFOUNDING		crit <- c(0)		outcome <- c("p50.f")		primary <- c("evi2.f")		covars <- uv$covar[uv$p < 0.5 & uv$covar != "evi2.f" & uv$covar != "a95.f"]
+full <- glmer(as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "))),					data = aa, family = binomial)
+full <- glmer(as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "))),					data = evi, family = binomial)
+full <- glmer(as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "), 						paste(" + (survey|code)")),					data = evi, family = binomial)
+as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "), 						paste(" + (survey|code)"))
+as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "), 						paste(" + (survey|code)")))
+full <- glmer(as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "), 						paste(" + (survey|code)"))),					data = evi, family = binomial)
+covars <- uv$covar[uv$p < 0.5 & uv$covar != "evi2.f" & uv$covar != "evi2" uv$covar != "a95.f"]
+covars <- uv$covar[uv$p < 0.5 & uv$covar != "evi2.f" & uv$covar != "evi2" & uv$covar != "a95.f"]
+full <- glmer(as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "), 						paste(" + (survey|code)"))),					data = evi, family = binomial)
+full
+print(full)
+print(summary(full))
+print(fixef(full))
+print(fixef(full)$fixef)
+print(fixef(full)@fixef)
+names(summary(full))
+summary(full)$coefficients
+print(summary(full)$coefficients)
+### MV CONFOUNDING		crit <- c(0)		outcome <- c("p50.f")		primary <- c("evi2.f")		covars <- uv$covar[uv$p < 0.5 & uv$covar != "evi2.f" & uv$covar != "evi2" & uv$covar != "a95.f"]#
+	while(crit < 5) {#
+		full <- glmer(as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "), 						paste(" + (survey|code)"))),					data = evi, family = binomial)#
+		print(summary(full)$coefficients)#
+		beta.full <- summary(full)$coef[2, 1]#
+		red.m <- matrix(NA, nrow = length(covars), ncol = 2)			rownames(red.m) <- covars#
+			for(c in 1:nrow(red.m)) {				red.m[c, 1] <- summary(glm(as.formula(paste(outcome, " ~ ", 										paste(primary, " + "), 										paste(covars[-c], collapse = " + "))),						data = evi, family = binomial))$coef[2, 1]					}#
+			red.m[, 2] <- abs(round(((red.m[,1] - beta.full[1])/beta.full[1]) * 100, 2))#
+			red.m <- red.m[order(red.m[, 2]), ]			print(red.m)			covars <- rownames(red.m)[2:nrow(red.m)]			crit <- red.m[1, 2]		}
+crit <- c(0)		outcome <- c("p50.f")		primary <- c("evi2.f")		covars <- uv$covar[uv$p < 0.2 & uv$covar != "evi2.f" & uv$covar != "evi2" & uv$covar != "a95.f"]
+while(crit < 5) {#
+		full <- glmer(as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "), 						paste(" + (survey|code)"))),					data = evi, family = binomial)#
+		print(summary(full)$coefficients)#
+		beta.full <- summary(full)$coef[2, 1]#
+		red.m <- matrix(NA, nrow = length(covars), ncol = 2)			rownames(red.m) <- covars#
+			for(c in 1:nrow(red.m)) {				red.m[c, 1] <- summary(glm(as.formula(paste(outcome, " ~ ", 										paste(primary, " + "), 										paste(covars[-c], collapse = " + "))),						data = evi, family = binomial))$coef[2, 1]					}#
+			red.m[, 2] <- abs(round(((red.m[,1] - beta.full[1])/beta.full[1]) * 100, 2))#
+			red.m <- red.m[order(red.m[, 2]), ]			print(red.m)			covars <- rownames(red.m)[2:nrow(red.m)]			crit <- red.m[1, 2]		}
+covars <- uv$covar[uv$p < 0.2 & uv$covar != "evi2.f" & uv$covar != "evi2" & uv$covar != "dtes.f" & uv$covar != "a95.f"]
+while(crit < 5) {#
+		full <- glmer(as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "), 						paste(" + (survey|code)"))),					data = evi, family = binomial)#
+		print(summary(full)$coefficients)#
+		beta.full <- summary(full)$coef[2, 1]#
+		red.m <- matrix(NA, nrow = length(covars), ncol = 2)			rownames(red.m) <- covars#
+			for(c in 1:nrow(red.m)) {				red.m[c, 1] <- summary(glm(as.formula(paste(outcome, " ~ ", 										paste(primary, " + "), 										paste(covars[-c], collapse = " + "))),						data = evi, family = binomial))$coef[2, 1]					}#
+			red.m[, 2] <- abs(round(((red.m[,1] - beta.full[1])/beta.full[1]) * 100, 2))#
+			red.m <- red.m[order(red.m[, 2]), ]			print(red.m)			covars <- rownames(red.m)[2:nrow(red.m)]			crit <- red.m[1, 2]		}
+final.glm <- glm(as.formula(paste(outcome, " ~ ", primary, " + ", 								paste(covars, collapse = " + "))),					data = evi, family = binomial)		beta <- summary(final.glm)$coef[2:nrow(summary(final.glm)$coef), 1]		se <- summary(final.glm)$coef[2:nrow(summary(final.glm)$coef), 2]		p <- summary(final.glm)$coef[2:nrow(summary(final.glm)$coef), 4]#
+		final.mtx <- as.data.frame(matrix(NA, nrow = nrow(summary(final.glm)$coef) - 1, ncol = 5))			colnames(final.mtx) <- c("covar", "aor", "low", "upp", "p")			final.mtx$covar <- c(primary, covars)#
+			final.mtx$aor <- round(exp(beta), 2)			final.mtx$low <- round(exp(beta - (1.96 * se)), 2)			final.mtx$upp <- round(exp(beta + (1.96 * se)), 2)			final.mtx$p <- round(p, 3)#
+		final.mtx
+coxph(Surv(t1, t2, status) ~ as.factor(evi2), data = evi)
+library(survival)
+coxph(Surv(t1, t2, status) ~ as.factor(evi2), data = evi)
+write.csv(uv, "~/Desktop/a-evict-uv.csv")write.csv(final.mtx, "~/Desktop/a-evict-mv.csv")
+library(epitools)
+evi$base <- c(0)	for(i in 1:length(unique(evi$code))) {		evi$base[evi$code == unique(evi$code)[i] & evi$survey == min(evi$survey[evi$code == unique(evi$code)[i]])] <- c(1)		}
+table(evi$base)
+length(unique(evi$code))
+epitools(evi$evi2.f[evi$base == 1], evi$p50[evi$base == 1])
+library(epitab)
+library(epitools)
+epitab(evi$evi2.f[evi$base == 1], evi$p50[evi$base == 1])
+fivenum(evi$age.n)
+fivenum(evi$age.n[evi$base == 1 & evi$p50.f == 0])
+fivenum(evi$age.n[evi$base == 1 & evi$p50.f == 1])
+t.test(evi$age.n[evi$base == 1 & evi$p50.f == 0], evi$age.n[evi$base == 1 & evi$p50.f == 1])
+epitab(evi$gndr.f[evi$base == 1], evi$p50[evi$base == 1])
+epitab(evi$cauc.f[evi$base == 1], evi$p50[evi$base == 1])
+epitab(evi$edu.f[evi$base == 1], evi$p50[evi$base == 1])
+epitab(evi$rel.f[evi$base == 1], evi$p50[evi$base == 1])
+epitab(evi$employf[evi$base == 1], evi$p50[evi$base == 1])
+epitab(evi$employ.f[evi$base == 1], evi$p50[evi$base == 1])
+epitab(evi$inj.f[evi$base == 1], evi$p50[evi$base == 1])
+epitab(evi$ninj.f[evi$base == 1], evi$p50[evi$base == 1])
+epitab(evi$mmt.f[evi$base == 1], evi$p50[evi$base == 1])
+epitab(evi$iinc.f[evi$base == 1], evi$p50[evi$base == 1])
+epitab(evi$balc.f[evi$base == 1], evi$p50[evi$base == 1])
+fivenum(evi$c00.n[evi$base == 1 & evi$p50.f == 0])
+fivenum(evi$c00.n[evi$base == 1 & evi$p50.f == 1])
+t.test(evi$c00.n[evi$base == 1 & evi$p50.f == 1], evi$c00.n[evi$base == 1 & evi$p50.f == 0])
+epitab(evi$mdxp.f[evi$base == 1], evi$p50[evi$base == 1])
+library(gee)library(lme4)library(influence.ME)library(epitools)rm(list = ls())load("~/Documents/1st/A_u9/A_u9-001")	#
+# acc$tvl :: Days above VL 1500; acc$fup :: Days in observation period	acc$tvl <- c(NA)	acc$fup <- c(NA)#
+		aids <- unique(acc$ACCESS_CODE)#
+		for(i in 1:length(aids)) {			# i <- sample(1:length(aids), 1)			aid <- aids[i]#
+			pvl <- dp[dp$ACCESS_CODE == aid, ]				pvl <- pvl[order(pvl$dt.tst), c("ACCESS_CODE", "dt.tst", "VLOAD")]#
+			if(nrow(pvl) == 0) {next}#
+			tmp <- as.data.frame(matrix(NA, 					nrow = length(as.Date(c(as.Date(min(pvl$dt.tst)):as.Date(max(pvl$dt.tst))), origin = "1970-01-01")),					ncol = 4))				names(tmp) <- c("ACCESS_CODE", "dt.tst", "VLOAD", "f")					tmp$ACCESS_CODE <- pvl$ACCESS_CODE[1]					tmp$dt.tst <- as.Date(c(as.Date(min(pvl$dt.tst)):as.Date(max(pvl$dt.tst))), origin = "1970-01-01")#
+				for(f in 1:nrow(pvl)) {					tmp$dt.tst[tmp$dt.tst == pvl$dt.tst[f]] <- as.Date(pvl$dt.tst[f])					tmp$f[tmp$dt.tst == pvl$dt.tst[f]] <- c(1)					tmp$VLOAD[tmp$dt.tst == pvl$dt.tst[f]] <- pvl$VLOAD[f]					}					tmp$f[is.na(tmp$f) == TRUE] <- c(0)#
+				if(nrow(tmp) > 1) {					for(f in 1:(nrow(pvl)-1)) {						dt.str <- as.Date(pvl$dt.tst[f])						dt.end <- as.Date(pvl$dt.tst[f+1])						lngth <- nrow(tmp[tmp$dt.tst >= dt.str & tmp$dt.tst <= dt.end, ])						tmp$VLOAD[tmp$dt.tst >= dt.str & tmp$dt.tst <= dt.end] <- 							seq(tmp$VLOAD[tmp$dt.tst == dt.str], tmp$VLOAD[tmp$dt.tst == dt.end],							length.out = lngth)						}				}#
+				tmp$vl1500 <- ifelse(tmp$VLOAD > 1500, 1, 0)#
+			fup <- acc[acc$ACCESS_CODE == aid, c("ACCESS_CODE", "dt.int", "fa", "tvl", "fup")]				fup <- fup[fup$dt.int >= (as.Date(min(pvl$dt.tst)) - 180), ]#
+			if(nrow(fup) > 0) {				for(f in 1:nrow(fup)) {					if(f == 1) {dt.str <- as.Date(fup$dt.int[f]) - 180}					if(f > 1) {dt.str <- as.Date(max(c(fup$dt.int[f-1], fup$dt.int[f]-180)))}						dt.end <- as.Date(fup$dt.int[f])						fup$tvl[f] <- sum(tmp$vl1500[tmp$dt.tst > dt.str & tmp$dt.tst <= dt.end])						fup$fup[f] <- as.numeric(dt.end - dt.str)				}			}#
+			for(f in 1:nrow(fup)) {				acc$tvl[acc$ACCESS_CODE == fup$ACCESS_CODE[f] & acc$fa == fup$fa[f]] <- fup$tvl[f]				acc$fup[acc$ACCESS_CODE == fup$ACCESS_CODE[f] & acc$fa == fup$fa[f]] <- fup$fup[f]				}			print(round((i/length(aids)) * 100, 1))		}	acc <- acc[acc$a == 1, ]	acc <- acc[is.na(acc$tvl) == FALSE, ]	# acc[acc$ACCESS_CODE == sample(unique(acc$ACCESS_CODE), 1), c("ACCESS_CODE", "dt.int", "fa", "pvl", "tvl")]
+acc$base <- c(0)		for(i in 1:length(unique(acc$ACCESS_CODE))) {			aid <- unique(acc$ACCESS_CODE)[i]			acc$base[acc$ACCESS_CODE == aid & acc$fa == min(acc$fa[acc$ACCESS_CODE == aid])] <- c(1)			}
+acc$c00.init <- c(NA)		aids <- unique(acc$ACCESS_CODE)			for(i in 1:length(aids)) {				aid <- aids[i]				# aid <- sample(aids, 1)				dt.init <- as.Date(min(da$dt.str[da$ACCESS_CODE == aid]))					cd4 <- dc[dc$ACCESS_CODE == aid & dc$dt.tst <= dt.init, ]					if(nrow(cd4) > 0) {acc$c00.init[acc$ACCESS_CODE == aid] <- 						cd4$c00[cd4$dt.tst == max(cd4$dt.tst)]; next}					}					acc$c00.init[is.na(acc$c00.init) == TRUE] <- mean(acc$c00.init[is.na(acc$c00.init) == FALSE])#
+	acc$tvl.pct <- as.integer((acc$tvl/acc$fup) * 100)
+acc$age_b[is.na(acc$age_b) == TRUE] <- mean(acc$age_b, na.rm = TRUE)		acc$gender[is.na(acc$gender) == TRUE] <- c(0)		acc$unstable[is.na(acc$unstable) == TRUE] <- c(0)		acc$rel[is.na(acc$rel) == TRUE] <- c(0)		acc$edu[is.na(acc$edu) == TRUE] <- c(0)		acc$cokefreq[is.na(acc$cokefreq) == TRUE] <- c(0)				acc$cracfreq[is.na(acc$cracfreq) == TRUE] <- c(0)		acc$emp[is.na(acc$emp) == TRUE] <- c(0)
+acc$nstbl.f <- as.factor(acc$unstable)	acc$rel.f <- as.factor(acc$rel)	acc$edu.f <- as.factor(acc$edu)	acc$jail.f <- as.factor(acc$jail)	acc$hero.f <- as.factor(acc$herofreq)	acc$coke.f <- as.factor(acc$cokefreq)	acc$mmt.f <- as.factor(acc$mmt)	acc$crac.f <- as.factor(acc$cracfreq)	acc$emp.f <- as.factor(acc$employ)	acc$gndr.f <- as.factor(acc$gender_tr == "M")	acc$cauc.f <- as.factor(acc$white)	acc$age.n <- as.numeric(acc$age_b)	acc$y.n <- as.numeric(substr(as.character(acc$dt.int), 1, 4))	acc$dtes.f <- as.factor(acc$dtes)	acc$hless.f <- as.factor(acc$homeless)
+mdl
+r
+r <- c(1)
+covars <- c("mmt.f", "age.n", "gndr.f", "cauc.f", "coke.f", "crac.f", "emp.f", "rel.f", "nstbl.f",				"dtes.f", "edu.f", "c00.init")#
+	outcome <- c("tvl.pct")
+if(class(acc[, covars[r]]) == "factor") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.factor(", covars[r], ") + (survey | code)")),					data = evi, family = binomial)}		if(class(evi[, covars[r]]) == "numeric") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ") + (survey | code)")),					data = evi, family = binomial)}
+names(acc)
+if(class(acc[, covars[r]]) == "factor") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.factor(", covars[r], ") + (fa | ACCESS_CODE)")),					data = acc, family = binomial)}		if(class(evi[, covars[r]]) == "numeric") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ") + (fa | ACCESS_CODE)")),					data = acc, family = binomial)}
+if(class(acc[, covars[r]]) == "factor") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.factor(", covars[r], ") + (fa | ACCESS_CODE)")),					data = acc, family = binomial)}		if(class(acc[, covars[r]]) == "numeric") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ") + (fa | ACCESS_CODE)")),					data = acc, family = binomial)}
+if(class(acc[, covars[r]]) == "factor") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.factor(", covars[r], ") + (fa | ACCESS_CODE)")),					data = acc, family = poisson)}		if(class(acc[, covars[r]]) == "numeric") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ") + (fa | ACCESS_CODE)")),					data = acc, family = poisson)}
+print(summary(mdl))
+print(summary(mdl)$coefficient)
+smmry <- summary(mdl)$coefficient
+print(smmry[2:nrow(smmry)])
+print(smmry[2:nrow(smmry), ])
+print(smmry)
+print(summary(mdl)$coefficient)
+# Factors associated with time above VL 1500 among ART-exposed	covars <- c("mmt.f", "age.n", "gndr.f", "cauc.f", "coke.f", "crac.f", "emp.f", "rel.f", "nstbl.f",				"dtes.f", "edu.f", "c00.init")#
+	outcome <- c("tvl.pct")#
+	uv <- as.data.frame(matrix(NA, nrow = 1, ncol = 5))		colnames(uv) <- c("covar", "rr", "low", "upp", "p")	for(r in 1:length(covars)) {		if(class(acc[, covars[r]]) == "factor") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.factor(", covars[r], ") + (fa | ACCESS_CODE)")),					data = acc, family = poisson)}		if(class(acc[, covars[r]]) == "numeric") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ") + (fa | ACCESS_CODE)")),					data = acc, family = poisson)}#
+		print(summary(mdl)$coefficient)#
+		lvls <- c(length(fixef(mdl)) - 1)		tmp <- as.data.frame(matrix(NA, nrow = lvls, ncol = 5))			colnames(tmp) <- c("covar", "or", "low", "upp", "p")#
+		b <- fixef(mdl)[2:length(fixef(mdl))]		se <- se.fixef(mdl)[2:length(se.fixef(mdl))]		#
+			tmp$covar <- covars[r]			tmp$rr <- round(exp(b), 2)			tmp$low <- round(exp(b - (1.96 * se)), 2)			tmp$upp <- round(exp(b + (1.96 * se)), 2)			tmp$p <- round(2 * pt(-abs(b/se), df = nrow(acc) - 1), 3)#
+		uv <- rbind(uv, tmp)					}		uv <- uv[2:nrow(uv), ]		print(uv)
+# Factors associated with time above VL 1500 among ART-exposed	covars <- c("mmt.f", "age.n", "gndr.f", "cauc.f", "coke.f", "crac.f", "emp.f", "rel.f", "nstbl.f",				"dtes.f", "edu.f", "c00.init")#
+	outcome <- c("tvl.pct")#
+	uv <- as.data.frame(matrix(NA, nrow = 1, ncol = 5))		colnames(uv) <- c("covar", "rr", "low", "upp", "p")	for(r in 1:length(covars)) {		if(class(acc[, covars[r]]) == "factor") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.factor(", covars[r], ") + (fa | ACCESS_CODE)")),					data = acc, family = poisson)}		if(class(acc[, covars[r]]) == "numeric") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ") + (fa | ACCESS_CODE)")),					data = acc, family = poisson)}#
+		print(summary(mdl)$coefficient)#
+		lvls <- c(length(fixef(mdl)) - 1)		tmp <- as.data.frame(matrix(NA, nrow = lvls, ncol = 5))			colnames(tmp) <- c("covar", "rr", "low", "upp", "p")#
+		b <- fixef(mdl)[2:length(fixef(mdl))]		se <- se.fixef(mdl)[2:length(se.fixef(mdl))]		#
+			tmp$covar <- covars[r]			tmp$rr <- round(exp(b), 2)			tmp$low <- round(exp(b - (1.96 * se)), 2)			tmp$upp <- round(exp(b + (1.96 * se)), 2)			tmp$p <- round(2 * pt(-abs(b/se), df = nrow(acc) - 1), 3)#
+		uv <- rbind(uv, tmp)					}		uv <- uv[2:nrow(uv), ]		print(uv)
+library(lme4)library(influence.ME)library(epitools)rm(list = ls())load("~/Documents/1st/A_u9/A_u9-001")	evi <- as.data.frame(read.csv("~/Documents/Research/Analyses/A_evict/Final_evi.csv"), stringsAsFactors = FALSE)ids <- as.data.frame(matrix(NA, nrow = length(unique(evi$code)), ncol = 2))	names(ids) <- c("code", "bl")	ids$code <- unique(evi$code)#
+	for(r in 1:nrow(ids)) {			code <- ids$code[r]		if(sum(evi$vload50[evi$code == code]) == 0) {next}		ids$bl[r] <- min(evi$survey[evi$code == code & evi$vload50 == 1])		}	evi$f <- c(0)		for(r in 1:nrow(ids)) {			if(is.na(ids$bl[r]) == TRUE) {next}			evi$f[evi$code == ids$code[r] & evi$survey >= ids$bl[r]] <- c(1)			}#
+	evi$dt.int <- as.Date(as.character(evi$int_date), "%d%b%Y")# t1, t2, status	evi$t1 <- c(NA); evi$t2 <- c(NA); evi$status <- c(NA)#
+		for(r in 1:nrow(ids)) {			if(is.na(ids$bl[r]) == TRUE) {next}			code <- ids$code[r]			# code <- sample(unique(ids$code[is.na(ids$bl) == FALSE]), 1)			tmp <- evi[evi$code == code & evi$f == 1, c("code", "dt.int", "f", "t1", "t2", "status", "survey", "vload50")]			if(nrow(tmp) == 1) {tmp$f <- c(0)}#
+			if(nrow(tmp) > 1) {				dt.b <- as.Date(tmp$dt.int[1])				tmp$t2 <- as.numeric(tmp$dt.int - (dt.b - 180))				for(t in 2:nrow(tmp)) {					tmp$t1[t] <- max(c((tmp$t2[t-1] + 1), (tmp$t2[t] - 180)))					}				tmp$t1[1] <- c(0)#
+				tmp$flg <- c(0)#
+				while(sum(tmp$flg) < nrow(tmp)) {					srv <- min(tmp$survey[tmp$flg == 0])										if(tmp$vload50[tmp$survey == srv] == 1 & tmp$t1[tmp$survey == srv] == 0) {tmp$status[tmp$survey == srv] <- c(0); tmp$flg[tmp$survey == srv] <- c(1)}					if(tmp$vload50[tmp$survey == srv] == 1 & tmp$t1[tmp$survey == srv] > 0) {tmp$status[tmp$survey == srv] <- c(0); tmp$flg[tmp$survey == srv] <- c(1)}					if(tmp$vload50[tmp$survey == srv] == 0 & tmp$t1[tmp$survey == srv] > 0) {						tmp$status[tmp$survey == srv] <- c(1); tmp$flg[tmp$survey <= srv] <- c(1)						if(length(tmp$flg[tmp$flg == 0 & tmp$vload50 == 1]) == 0) {tmp$status[tmp$survey >= srv] <- c(NA); tmp$flg[tmp$survey >= srv] <- c(1)}						if(length(tmp$flg[tmp$flg == 0 & tmp$vload50 == 1]) > 0) {							nxt <- min(tmp$survey[tmp$flg == 0 & tmp$vload50 == 1])							tmp$status[tmp$survey > srv & tmp$survey < nxt] <- c(NA)							tmp$status[tmp$survey == nxt] <- c(0)							tmp$flg[tmp$survey <= nxt] <- c(1)							}												}					}#
+			for(t in 1:nrow(tmp)) {				evi$f[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$f[t]				evi$t1[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$t1[t]				evi$t2[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$t2[t]									evi$status[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$status[t]								}			}		}#
+	# evi[evi$code == sample(unique(evi$code), 1), c("code", "dt.int", "f", "t1", "t2", "status", "survey", "vload50")]	# code <- sample(unique(evi$code), 1); cbind(as.character(evi$dt.int[evi$code == code]), as.character(acc$dt.int[acc$BART_CODE == code]))evi$base <- c(0)	for(i in 1:length(unique(evi$code))) {		evi$base[evi$code == unique(evi$code)[i] & evi$survey == min(evi$survey[evi$code == unique(evi$code)[i]])] <- c(1)		}evi$evi2 <- c(0)	evi$evi2[evi$evicted_l6m == 1 & evi$homeless_l6m == 1] <- c(1)	evi$evi2.f <- as.factor(evi$evi2)evi$age.n <- as.numeric(evi$age_b)evi$dtes.f <- as.factor(evi$dtes_l6m)evi$rel.f <- as.factor(evi$relationship)evi$edu.f <- as.factor(evi$education_rev)evi$ninj.f <- as.factor(evi$daily_drug_noninj_l6m)evi$inj.f <- as.factor(evi$daily_inj_l6m)evi$mmt.f <- as.factor(evi$mmt_l6m)evi$employ.f <- as.factor(evi$employment_l6m)evi$iinc.f <- as.factor(evi$illigal_inc_l6m)evi$balc.f <- as.factor(evi$binge_alcohol_l6m)evi$gndr.f <- as.factor(evi$gender)       evi
+$cauc.f <- as.factor(evi$white)evi$p50.f <- as.factor(ifelse(evi$vload50 == 0, 1, 0))evi$a95.f <- as.factor(evi$adh95)evi$c00.n <- as.numeric(evi$cd4_p100_l6m)evi$mdxp.f <- as.factor(evi$MD_exper)#
+	covars <- c("evi2.f", "age.n", "dtes.f", "rel.f", "edu.f", "ninj.f", "inj.f", "mmt.f", "employ.f",				"iinc.f", "balc.f", "gndr.f", "cauc.f", "a95.f", "c00.n", "mdxp.f")#
+	outcome <- c("p50.f")#
+	uv <- as.data.frame(matrix(NA, nrow = 1, ncol = 5))		colnames(uv) <- c("covar", "or", "low", "upp", "p")	for(r in 1:length(covars)) {		if(class(evi[, covars[r]]) == "factor") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.factor(", covars[r], ") + (survey | code)")),					data = evi, family = binomial)}		if(class(evi[, covars[r]]) == "numeric") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ") + (survey | code)")),					data = evi, family = binomial)}#
+		lvls <- c(length(fixef(mdl)) - 1)		tmp <- as.data.frame(matrix(NA, nrow = lvls, ncol = 5))			colnames(tmp) <- c("covar", "or", "low", "upp", "p")#
+		b <- fixef(mdl)[2:length(fixef(mdl))]		se <- se.fixef(mdl)[2:length(se.fixef(mdl))]		#
+			tmp$covar <- covars[r]			tmp$or <- round(exp(b), 2)			tmp$low <- round(exp(b - (1.96 * se)), 2)			tmp$upp <- round(exp(b + (1.96 * se)), 2)			tmp$p <- round(2 * pt(-abs(b/se), df = nrow(acc) - 1), 3)#
+		uv <- rbind(uv, tmp)					}		uv <- uv[2:nrow(uv), ]		print(uv)#
+### MV CONFOUNDING		crit <- c(0)		outcome <- c("p50.f")		primary <- c("evi2.f")		covars <- uv$covar[uv$p < 0.2 & uv$covar != "evi2.f" & uv$covar != "evi2" & uv$covar != "dtes.f" & uv$covar != "a95.f"]#
+	while(crit < 5) {#
+		full <- glmer(as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "), 						paste(" + (survey|code)"))),					data = evi, family = binomial)#
+		print(summary(full)$coefficients)#
+		beta.full <- summary(full)$coef[2, 1]#
+		red.m <- matrix(NA, nrow = length(covars), ncol = 2)			rownames(red.m) <- covars#
+			for(c in 1:nrow(red.m)) {				red.m[c, 1] <- summary(glm(as.formula(paste(outcome, " ~ ", 										paste(primary, " + "), 										paste(covars[-c], collapse = " + "))),						data = evi, family = binomial))$coef[2, 1]					}#
+			red.m[, 2] <- abs(round(((red.m[,1] - beta.full[1])/beta.full[1]) * 100, 2))#
+			red.m <- red.m[order(red.m[, 2]), ]			print(red.m)			covars <- rownames(red.m)[2:nrow(red.m)]			crit <- red.m[1, 2]		}
+covars <- c("c00.n")#
+	final.glm <- glmer(as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "), 						paste(" + (survey|code)"))),					data = evi, family = binomial)#
+		beta <- summary(final.glm)$coef[2:nrow(summary(final.glm)$coef), 1]		se <- summary(final.glm)$coef[2:nrow(summary(final.glm)$coef), 2]		p <- summary(final.glm)$coef[2:nrow(summary(final.glm)$coef), 4]#
+		final.mtx <- as.data.frame(matrix(NA, nrow = nrow(summary(final.glm)$coef) - 1, ncol = 5))			colnames(final.mtx) <- c("covar", "aor", "low", "upp", "p")			final.mtx$covar <- c(primary, covars)#
+			final.mtx$aor <- round(exp(beta), 2)			final.mtx$low <- round(exp(beta - (1.96 * se)), 2)			final.mtx$upp <- round(exp(beta + (1.96 * se)), 2)			final.mtx$p <- round(p, 3)#
+		final.mtx
+library(gee)library(lme4)library(influence.ME)library(epitools)rm(list = ls())load("~/Documents/1st/A_u9/A_u9-001")	#
+# acc$tvl :: Days above VL 1500; acc$fup :: Days in observation period	acc$tvl <- c(NA)	acc$fup <- c(NA)#
+		aids <- unique(acc$ACCESS_CODE)#
+		for(i in 1:length(aids)) {			# i <- sample(1:length(aids), 1)			aid <- aids[i]#
+			pvl <- dp[dp$ACCESS_CODE == aid, ]				pvl <- pvl[order(pvl$dt.tst), c("ACCESS_CODE", "dt.tst", "VLOAD")]#
+			if(nrow(pvl) == 0) {next}#
+			tmp <- as.data.frame(matrix(NA, 					nrow = length(as.Date(c(as.Date(min(pvl$dt.tst)):as.Date(max(pvl$dt.tst))), origin = "1970-01-01")),					ncol = 4))				names(tmp) <- c("ACCESS_CODE", "dt.tst", "VLOAD", "f")					tmp$ACCESS_CODE <- pvl$ACCESS_CODE[1]					tmp$dt.tst <- as.Date(c(as.Date(min(pvl$dt.tst)):as.Date(max(pvl$dt.tst))), origin = "1970-01-01")#
+				for(f in 1:nrow(pvl)) {					tmp$dt.tst[tmp$dt.tst == pvl$dt.tst[f]] <- as.Date(pvl$dt.tst[f])					tmp$f[tmp$dt.tst == pvl$dt.tst[f]] <- c(1)					tmp$VLOAD[tmp$dt.tst == pvl$dt.tst[f]] <- pvl$VLOAD[f]					}					tmp$f[is.na(tmp$f) == TRUE] <- c(0)#
+				if(nrow(tmp) > 1) {					for(f in 1:(nrow(pvl)-1)) {						dt.str <- as.Date(pvl$dt.tst[f])						dt.end <- as.Date(pvl$dt.tst[f+1])						lngth <- nrow(tmp[tmp$dt.tst >= dt.str & tmp$dt.tst <= dt.end, ])						tmp$VLOAD[tmp$dt.tst >= dt.str & tmp$dt.tst <= dt.end] <- 							seq(tmp$VLOAD[tmp$dt.tst == dt.str], tmp$VLOAD[tmp$dt.tst == dt.end],							length.out = lngth)						}				}#
+				tmp$vl1500 <- ifelse(tmp$VLOAD > 1500, 1, 0)#
+			fup <- acc[acc$ACCESS_CODE == aid, c("ACCESS_CODE", "dt.int", "fa", "tvl", "fup")]				fup <- fup[fup$dt.int >= (as.Date(min(pvl$dt.tst)) - 180), ]#
+			if(nrow(fup) > 0) {				for(f in 1:nrow(fup)) {					if(f == 1) {dt.str <- as.Date(fup$dt.int[f]) - 180}					if(f > 1) {dt.str <- as.Date(max(c(fup$dt.int[f-1], fup$dt.int[f]-180)))}						dt.end <- as.Date(fup$dt.int[f])						fup$tvl[f] <- sum(tmp$vl1500[tmp$dt.tst > dt.str & tmp$dt.tst <= dt.end])						fup$fup[f] <- as.numeric(dt.end - dt.str)				}			}#
+			for(f in 1:nrow(fup)) {				acc$tvl[acc$ACCESS_CODE == fup$ACCESS_CODE[f] & acc$fa == fup$fa[f]] <- fup$tvl[f]				acc$fup[acc$ACCESS_CODE == fup$ACCESS_CODE[f] & acc$fa == fup$fa[f]] <- fup$fup[f]				}			print(round((i/length(aids)) * 100, 1))		}	acc <- acc[acc$a == 1, ]	acc <- acc[is.na(acc$tvl) == FALSE, ]	# acc[acc$ACCESS_CODE == sample(unique(acc$ACCESS_CODE), 1), c("ACCESS_CODE", "dt.int", "fa", "pvl", "tvl")]	acc$base <- c(0)		for(i in 1:length(unique(acc$ACCESS_CODE))) {			aid <- unique(acc$ACCESS_CODE)[i]			acc$base[acc$ACCESS_CODE == aid & acc$fa == min(acc$fa[acc$ACCESS_CODE == aid])] <- c(1)			}#
+	acc$c00.init <- c(NA)		aids <- unique(acc$ACCESS_CODE)			for(i in 1:length(aids)) {				aid <- aids[i]				# aid <- sample(aids, 1)				dt.init <- as.Date(min(da$dt.str[da$ACCESS_CODE == aid]))					cd4 <- dc[dc$ACCESS_CODE == aid & dc$dt.tst <= dt.init, ]					if(nrow(cd4) > 0) {acc$c00.init[acc$ACCESS_CODE == aid] <- 						cd4$c00[cd4$dt.tst == max(cd4$dt.tst)]; next}					}					acc$c00.init[is.na(acc$c00.init) == TRUE] <- mean(acc$c00.init[is.na(acc$c00.init) == FALSE])#
+	acc$tvl.pct <- as.integer((acc$tvl/acc$fup) * 100)		acc$age_b[is.na(acc$age_b) == TRUE] <- mean(acc$age_b, na.rm = TRUE)		acc$gender[is.na(acc$gender) == TRUE] <- c(0)		acc$unstable[is.na(acc$unstable) == TRUE] <- c(0)		acc$rel[is.na(acc$rel) == TRUE] <- c(0)		acc$edu[is.na(acc$edu) == TRUE] <- c(0)		acc$cokefreq[is.na(acc$cokefreq) == TRUE] <- c(0)				acc$cracfreq[is.na(acc$cracfreq) == TRUE] <- c(0)		acc$emp[is.na(acc$emp) == TRUE] <- c(0)#
+	acc$nstbl.f <- as.factor(acc$unstable)	acc$rel.f <- as.factor(acc$rel)	acc$edu.f <- as.factor(acc$edu)	acc$jail.f <- as.factor(acc$jail)	acc$hero.f <- as.factor(acc$herofreq)	acc$coke.f <- as.factor(acc$cokefreq)	acc$mmt.f <- as.factor(acc$mmt)	acc$crac.f <- as.factor(acc$cracfreq)	acc$emp.f <- as.factor(acc$employ)	acc$gndr.f <- as.factor(acc$gender_tr == "M")	acc$cauc.f <- as.factor(acc$white)	acc$age.n <- as.numeric(acc$age_b)	acc$y.n <- as.numeric(substr(as.character(acc$dt.int), 1, 4))	acc$dtes.f <- as.factor(acc$dtes)	acc$hless.f <- as.factor(acc$homeless)
+save.image("~/Documents/Research/Analyses/A_tvl/A_tvl-001")
+covars <- c("mmt.f", "age.n", "gndr.f", "cauc.f", "coke.f", "crac.f", "emp.f", "rel.f", "nstbl.f",				"dtes.f", "edu.f", "c00.init")#
+	outcome <- c("tvl.pct")
+r
+r <- c(1)
+if(class(acc[, covars[r]]) == "factor") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.factor(", covars[r], ") + (fa | ACCESS_CODE)")),					data = acc, family = poisson)}		if(class(acc[, covars[r]]) == "numeric") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ") + (fa | ACCESS_CODE)")),					data = acc, family = poisson)}
+print(summary(mdl)$coefficient)
+# Factors associated with time above VL 1500 among ART-exposed	covars <- c("mmt.f", "age.n", "gndr.f", "cauc.f", "coke.f", "crac.f", "emp.f", "rel.f", "nstbl.f",				"dtes.f", "edu.f", "c00.init")#
+	outcome <- c("tvl.pct")#
+	uv <- as.data.frame(matrix(NA, nrow = 1, ncol = 5))		colnames(uv) <- c("covar", "rr", "low", "upp", "p")	for(r in 1:length(covars)) {		if(class(acc[, covars[r]]) == "factor") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.factor(", covars[r], ") + (fa | ACCESS_CODE)")),					data = acc, family = poisson)}		if(class(acc[, covars[r]]) == "numeric") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ") + (fa | ACCESS_CODE)")),					data = acc, family = poisson)}#
+		print(summary(mdl)$coefficient)#
+		lvls <- c(length(fixef(mdl)) - 1)		tmp <- as.data.frame(matrix(NA, nrow = lvls, ncol = 5))			colnames(tmp) <- c("covar", "rr", "low", "upp", "p")#
+		b <- fixef(mdl)[2:length(fixef(mdl))]		se <- se.fixef(mdl)[2:length(se.fixef(mdl))]		#
+			tmp$covar <- covars[r]			tmp$rr <- round(exp(b), 2)			tmp$low <- round(exp(b - (1.96 * se)), 2)			tmp$upp <- round(exp(b + (1.96 * se)), 2)			tmp$p <- round(2 * pt(-abs(b/se), df = nrow(acc) - 1), 3)#
+		uv <- rbind(uv, tmp)					}		uv <- uv[2:nrow(uv), ]		print(uv)
+### MV CONFOUNDING		crit <- c(0)		outcome <- c("tvl.pct")		primary <- c("mmt.f")		covars <- uv$covar[uv$p < 0.2 & uv$covar != "mmt.f"]#
+	while(crit < 5) {#
+		full <- glmer(as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "), 						paste(" + (fa|ACCESS_CODE)"))),					data = acc, family = poisson)#
+		print(summary(full)$coefficients)#
+		beta.full <- summary(full)$coef[2, 1]#
+		red.m <- matrix(NA, nrow = length(covars), ncol = 2)			rownames(red.m) <- covars#
+			for(c in 1:nrow(red.m)) {				red.m[c, 1] <- summary(glm(as.formula(paste(outcome, " ~ ", 										paste(primary, " + "), 										paste(covars[-c], collapse = " + "))),						data = acc, family = poisson))$coef[2, 1]					}#
+			red.m[, 2] <- abs(round(((red.m[,1] - beta.full[1])/beta.full[1]) * 100, 2))#
+			red.m <- red.m[order(red.m[, 2]), ]			print(red.m)			covars <- rownames(red.m)[2:nrow(red.m)]			crit <- red.m[1, 2]		}
+covars <- uv$covar[uv$p < 0.2 & uv$covar != "mmt.f"]
+covars
+full <- glmer(as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "), 						paste(" + (fa|ACCESS_CODE)"))),					data = acc, family = poisson)
+# Factors associated with time above VL 1500 among ART-exposed	covars <- c("mmt.f", "age.n", "gndr.f", "cauc.f", "coke.f", "crac.f", "emp.f", "rel.f", "nstbl.f",				"dtes.f", "edu.f", "c00.init")#
+	outcome <- c("tvl.pct")#
+		acc <- acc[order(acc$ACCESS_CODE, u$fa), ]#
+		uv <- as.data.frame(matrix(NA, nrow = 1, ncol = 5))			colnames(uv) <- c("covar", "rr", "low", "upp", "p")#
+		for(r in 1:length(covars)) {			if(class(acc[, covars[r]]) == "factor") {				mdl <- gee(as.formula(paste(outcome, " ~ as.factor(", covars[r], ")")),						id = ACCESS_CODE, data = acc, family = poisson, corstr = "exchangeable")}			if(class(acc[, covars[r]]) == "numeric") {				mdl <- gee(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ")")),						id = ACCESS_CODE, data = acc, family = poisson, corstr = "exchangeable")}#
+			lvls <- c(length(coef(mdl)) - 1)#
+			tmp <- as.data.frame(matrix(NA, nrow = lvls, ncol = 5))				colnames(tmp) <- c("covar", "rr", "low", "upp", "p")#
+			b <- summary(mdl)$coef[2:nrow(summary(mdl)$coef), 1]			se <- summary(mdl)$coef[2:nrow(summary(mdl)$coef), 4]#
+				tmp$covar <- covars[r]				tmp$rr <- round(exp(b), 2)				tmp$low <- round(exp(b - (1.96 * se)), 2)				tmp$upp <- round(exp(b + (1.96 * se)), 2)				tmp$p <- round(2 * pnorm(-abs(b/se)), 3)#
+			uv <- rbind(uv, tmp)			#
+			}			uv <- uv[2:nrow(uv), ]			print(uv)
+### MV CONFOUNDING		crit <- c(0)		outcome <- c("tvl.pct")		primary <- c("mmt.f")		covars <- uv$covar[uv$p < 0.2 & uv$covar != "mmt.f"]#
+	while(crit < 5) {#
+		full <- gee(as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "))),					data = acc, id = ACCESS_CODE, family = poisson, corstr = "exchangeable")#
+		beta.full <- summary(full)$coef[2, 1]#
+		red.m <- matrix(NA, nrow = length(covars), ncol = 2)			rownames(red.m) <- covars#
+			for(c in 1:nrow(red.m)) {				red.m[c, 1] <- summary(gee(as.formula(paste(outcome, " ~ ", 										paste(primary, " + "), 										paste(covars[-c], collapse = " + "))),						data = acc, family = poisson, corstr = "exchangeable"))$coef[2, 1]					}#
+			red.m[, 2] <- abs(round(((red.m[,1] - beta.full[1])/beta.full[1]) * 100, 2))#
+			red.m <- red.m[order(red.m[, 2]), ]			print(red.m)			covars <- rownames(red.m)[2:nrow(red.m)]			crit <- red.m[1, 2]		}	final.gee <- gee(as.formula(paste(outcome, " ~ ", primary, " + ", 								paste(covars, collapse = " + "))),					data = acc, family = poisson, corstr = "exchangeable")		beta <- summary(final.gee)$coef[, 1][2:nrow(summary(final.gee)$coef)]		se <- summary(final.gee)$coef[, 4][2:nrow(summary(final.gee)$coef)]		z <- summary(final.gee)$coef[, 5][2:nrow(summary(final.gee)$coef)]#
+		final.mtx <- as.data.frame(matrix(NA, nrow = nrow(summary(final.gee)$coef) - 1, ncol = 5))			colnames(final.mtx) <- c("covar", "arr", "low", "upp", "p")			final.mtx$covar <- names(coef(final.gee))[2:length(names(coef(final.gee)))]#
+			final.mtx$arr <- round(exp(beta), 2)			final.mtx$low <- round(exp(beta - (1.96 * se)), 2)			final.mtx$upp <- round(exp(beta + (1.96 * se)), 2)			final.mtx$p <- round(2 * pnorm(abs(z), lower.tail = FALSE), 3)#
+		final.mtx
+names(acc)
+### MV CONFOUNDING		crit <- c(0)		outcome <- c("tvl.pct")		primary <- c("mmt.f")		covars <- uv$covar[uv$p < 0.2 & uv$covar != "mmt.f"]#
+	while(crit < 5) {#
+		full <- gee(as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "))),					data = acc, id = ACCESS_CODE, family = poisson, corstr = "exchangeable")#
+		beta.full <- summary(full)$coef[2, 1]#
+		red.m <- matrix(NA, nrow = length(covars), ncol = 2)			rownames(red.m) <- covars#
+			for(c in 1:nrow(red.m)) {				red.m[c, 1] <- summary(gee(as.formula(paste(outcome, " ~ ", 										paste(primary, " + "), 										paste(covars[-c], collapse = " + "))),						data = acc, id = ACCESS_CODE, family = poisson, corstr = "exchangeable"))$coef[2, 1]					}#
+			red.m[, 2] <- abs(round(((red.m[,1] - beta.full[1])/beta.full[1]) * 100, 2))#
+			red.m <- red.m[order(red.m[, 2]), ]			print(red.m)			covars <- rownames(red.m)[2:nrow(red.m)]			crit <- red.m[1, 2]		}	final.gee <- gee(as.formula(paste(outcome, " ~ ", primary, " + ", 								paste(covars, collapse = " + "))),					data = acc, id = ACCESS_CODE, family = poisson, corstr = "exchangeable")		beta <- summary(final.gee)$coef[, 1][2:nrow(summary(final.gee)$coef)]		se <- summary(final.gee)$coef[, 4][2:nrow(summary(final.gee)$coef)]		z <- summary(final.gee)$coef[, 5][2:nrow(summary(final.gee)$coef)]#
+		final.mtx <- as.data.frame(matrix(NA, nrow = nrow(summary(final.gee)$coef) - 1, ncol = 5))			colnames(final.mtx) <- c("covar", "arr", "low", "upp", "p")			final.mtx$covar <- names(coef(final.gee))[2:length(names(coef(final.gee)))]#
+			final.mtx$arr <- round(exp(beta), 2)			final.mtx$low <- round(exp(beta - (1.96 * se)), 2)			final.mtx$upp <- round(exp(beta + (1.96 * se)), 2)			final.mtx$p <- round(2 * pnorm(abs(z), lower.tail = FALSE), 3)#
+		final.mtx
+### MV CONFOUNDING		crit <- c(0)		outcome <- c("tvl.pct")		primary <- c("mmt.f")		covars <- uv$covar[uv$p < 0.2 & uv$covar != "mmt.f"]#
+	while(crit < 1) {#
+		full <- gee(as.formula(paste(outcome, " ~ ", 						paste(primary, " + "), 						paste(covars, collapse = " + "))),					data = acc, id = ACCESS_CODE, family = poisson, corstr = "exchangeable")#
+		beta.full <- summary(full)$coef[2, 1]#
+		red.m <- matrix(NA, nrow = length(covars), ncol = 2)			rownames(red.m) <- covars#
+			for(c in 1:nrow(red.m)) {				red.m[c, 1] <- summary(gee(as.formula(paste(outcome, " ~ ", 										paste(primary, " + "), 										paste(covars[-c], collapse = " + "))),						data = acc, id = ACCESS_CODE, family = poisson, corstr = "exchangeable"))$coef[2, 1]					}#
+			red.m[, 2] <- abs(round(((red.m[,1] - beta.full[1])/beta.full[1]) * 100, 2))#
+			red.m <- red.m[order(red.m[, 2]), ]			print(red.m)			covars <- rownames(red.m)[2:nrow(red.m)]			crit <- red.m[1, 2]		}	final.gee <- gee(as.formula(paste(outcome, " ~ ", primary, " + ", 								paste(covars, collapse = " + "))),					data = acc, id = ACCESS_CODE, family = poisson, corstr = "exchangeable")		beta <- summary(final.gee)$coef[, 1][2:nrow(summary(final.gee)$coef)]		se <- summary(final.gee)$coef[, 4][2:nrow(summary(final.gee)$coef)]		z <- summary(final.gee)$coef[, 5][2:nrow(summary(final.gee)$coef)]#
+		final.mtx <- as.data.frame(matrix(NA, nrow = nrow(summary(final.gee)$coef) - 1, ncol = 5))			colnames(final.mtx) <- c("covar", "arr", "low", "upp", "p")			final.mtx$covar <- names(coef(final.gee))[2:length(names(coef(final.gee)))]#
+			final.mtx$arr <- round(exp(beta), 2)			final.mtx$low <- round(exp(beta - (1.96 * se)), 2)			final.mtx$upp <- round(exp(beta + (1.96 * se)), 2)			final.mtx$p <- round(2 * pnorm(abs(z), lower.tail = FALSE), 3)#
+		final.mtx
+uv
+library(lme4)library(influence.ME)library(epitools)rm(list = ls())load("~/Documents/1st/A_u9/A_u9-001")	evi <- as.data.frame(read.csv("~/Documents/Research/Analyses/A_evict/Final_evi_update.csv"), stringsAsFactors = FALSE)
+library(lme4)library(influence.ME)library(epitools)rm(list = ls())load("~/Documents/1st/A_u9/A_u9-001")	evi <- as.data.frame(read.csv("~/Documents/Research/Analyses/A_evict/Final_evi_update.csv"), stringsAsFactors = FALSE)# ids <- as.data.frame(matrix(NA, nrow = length(unique(evi$code)), ncol = 2))# 	names(ids) <- c("code", "bl")# 	ids$code <- unique(evi$code)# 	# 	for(r in 1:nrow(ids)) {	# 		code <- ids$code[r]# 		if(sum(evi$vload50[evi$code == code]) == 0) {next}# 		ids$bl[r] <- min(evi$survey[evi$code == code & evi$vload50 == 1])# 		}# # 	evi$f <- c(0)# 		for(r in 1:nrow(ids)) {# 			if(is.na(ids$bl[r]) == TRUE) {next}# 			evi$f[evi$code == ids$code[r] & evi$survey >= ids$bl[r]] <- c(1)# 			}#
+	evi$dt.int <- as.Date(as.character(evi$int_date), "%d%b%Y")# t1, t2, status# 	evi$t1 <- c(NA); evi$t2 <- c(NA); evi$status <- c(NA)# 	# 		for(r in 1:nrow(ids)) {# 			if(is.na(ids$bl[r]) == TRUE) {next}# 			code <- ids$code[r]# 			# code <- sample(unique(ids$code[is.na(ids$bl) == FALSE]), 1)# 			tmp <- evi[evi$code == code & evi$f == 1, c("code", "dt.int", "f", "t1", "t2", "status", "survey", "vload50")]# # 			if(nrow(tmp) == 1) {tmp$f <- c(0)}# 			# 			if(nrow(tmp) > 1) {# 				dt.b <- as.Date(tmp$dt.int[1])# 				tmp$t2 <- as.numeric(tmp$dt.int - (dt.b - 180))# 				for(t in 2:nrow(tmp)) {# 					tmp$t1[t] <- max(c((tmp$t2[t-1] + 1), (tmp$t2[t] - 180)))# 					}# 				tmp$t1[1] <- c(0)# 				# 				tmp$flg <- c(0)# 				# 				while(sum(tmp$flg) < nrow(tmp)) {# 					srv <- min(tmp$survey[tmp$flg == 0])					# 					if(tmp$vload50[tmp$survey == srv] == 1 & tmp$t1[tmp$survey == srv] == 0) {tmp$status[tmp$survey == srv] <- c(0); tmp$flg[tmp$survey == srv] <- c(1)}# 					if(tmp$vload50[tmp$surve
+y == srv] == 1 & tmp$t1[tmp$survey == srv] > 0) {tmp$status[tmp$survey == srv] <- c(0); tmp$flg[tmp$survey == srv] <- c(1)}# 					if(tmp$vload50[tmp$survey == srv] == 0 & tmp$t1[tmp$survey == srv] > 0) {# 						tmp$status[tmp$survey == srv] <- c(1); tmp$flg[tmp$survey <= srv] <- c(1)# 						if(length(tmp$flg[tmp$flg == 0 & tmp$vload50 == 1]) == 0) {tmp$status[tmp$survey >= srv] <- c(NA); tmp$flg[tmp$survey >= srv] <- c(1)}# 						if(length(tmp$flg[tmp$flg == 0 & tmp$vload50 == 1]) > 0) {# 							nxt <- min(tmp$survey[tmp$flg == 0 & tmp$vload50 == 1])# 							tmp$status[tmp$survey > srv & tmp$survey < nxt] <- c(NA)# 							tmp$status[tmp$survey == nxt] <- c(0)# 							tmp$flg[tmp$survey <= nxt] <- c(1)# 							}						# 						}# 					}# 						# 			for(t in 1:nrow(tmp)) {# 				evi$f[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$f[t]# 				evi$t1[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$t1[t]# 				evi$t2[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$t2[t]
+evi$status[evi$code == code & evi$survey == tmp$survey[t]] <- tmp$status[t]				# 				}# 			}# 		}#
+	# evi[evi$code == sample(unique(evi$code), 1), c("code", "dt.int", "f", "t1", "t2", "status", "survey", "vload50")]	# code <- sample(unique(evi$code), 1); cbind(as.character(evi$dt.int[evi$code == code]), as.character(acc$dt.int[acc$BART_CODE == code]))evi$base <- c(0)	for(i in 1:length(unique(evi$code))) {		evi$base[evi$code == unique(evi$code)[i] & evi$survey == min(evi$survey[evi$code == unique(evi$code)[i]])] <- c(1)		}
+names(evi)
+evi$evi2 <- c(0)	evi$evi2[evi$evicted_l6m == 1 & evi$homeless_c == 1] <- c(1)	evi$evi2.f <- as.factor(evi$evi2)
+evi$age.n <- as.numeric(evi$age_b)evi$dtes.f <- as.factor(evi$dtes_l6m)evi$rel.f <- as.factor(evi$relationship)evi$edu.f <- as.factor(evi$education_rev)evi$ninj.f <- as.factor(evi$daily_drug_noninj_l6m)evi$inj.f <- as.factor(evi$daily_inj_l6m)evi$mmt.f <- as.factor(evi$mmt_l6m)evi$employ.f <- as.factor(evi$employment_l6m)evi$iinc.f <- as.factor(evi$illigal_inc_l6m)evi$balc.f <- as.factor(evi$binge_alcohol_l6m)evi$gndr.f <- as.factor(evi$gender)       evi$cauc.f <- as.factor(evi$white)evi$p50.f <- as.factor(ifelse(evi$vload50 == 0, 1, 0))evi$a95.f <- as.factor(evi$adh95)evi$c00.n <- as.numeric(evi$cd4_p100_l6m)evi$mdxp.f <- as.factor(evi$MD_exper)
+covars <- c("evi2.f", "age.n", "dtes.f", "rel.f", "edu.f", "ninj.f", "inj.f", "mmt.f", "employ.f",				"iinc.f", "balc.f", "gndr.f", "cauc.f", "a95.f", "c00.n", "mdxp.f")#
+	outcome <- c("p50.f")#
+	uv <- as.data.frame(matrix(NA, nrow = 1, ncol = 5))		colnames(uv) <- c("covar", "or", "low", "upp", "p")	for(r in 1:length(covars)) {		if(class(evi[, covars[r]]) == "factor") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.factor(", covars[r], ") + (survey | code)")),					data = evi, family = binomial)}		if(class(evi[, covars[r]]) == "numeric") {			mdl <- glmer(as.formula(paste(outcome, " ~ as.numeric(", covars[r], ") + (survey | code)")),					data = evi, family = binomial)}#
+		lvls <- c(length(fixef(mdl)) - 1)		tmp <- as.data.frame(matrix(NA, nrow = lvls, ncol = 5))			colnames(tmp) <- c("covar", "or", "low", "upp", "p")#
+		b <- fixef(mdl)[2:length(fixef(mdl))]		se <- se.fixef(mdl)[2:length(se.fixef(mdl))]		#
+			tmp$covar <- covars[r]			tmp$or <- round(exp(b), 2)			tmp$low <- round(exp(b - (1.96 * se)), 2)			tmp$upp <- round(exp(b + (1.96 * se)), 2)			tmp$p <- round(2 * pt(-abs(b/se), df = nrow(acc) - 1), 3)#
+		uv <- rbind(uv, tmp)					}		uv <- uv[2:nrow(uv), ]		print(uv)
+ls()
+names(na0)
+names(na0)[substr(names(na0), 1, 4) == "NQ34"]
+table(na0$NQ34_TEST_HEPC)
+library(survival)library(epitools)load("~/Documents/1st/A_u9/A_u9-001")	#
+a <- as.data.frame(read.csv("~/Documents/Research/Analyses/A_scon-1-Initiation/Data-20140512/data_ART_initiation.csv"))	a$code <- as.character(a$code)	a$code[a$code == "A1191"] <- c("1191")	a$code[a$code == "A0035"] <- c("35")	a$code <- as.integer(a$code)	a$dt.int <- as.Date(a$stop_date, "%d%b%Y")	a$y <- as.numeric(substr(as.character(a$dt.int), 1, 4))	a$y.b <- c(NA)		aids <- unique(a$code)			for(i in 1:length(aids)) {				aid <- aids[i]				a$y.b[a$code == aid] <- min(a$y[a$code == aid])				}#
+vids <- as.data.frame(matrix(NA, nrow = length(unique(a$code)), ncol = 4))	names(vids) <- c("code", "a", "dt.midp", "dt.init")	vids$code <- unique(a$code)#
+		for(r in 1:nrow(vids)) {			vids$a[r] <- ifelse(sum(a$art_init[a$code == vids$code[r]]) > 0, 1, 0)			vids$dt.midp[r] <- as.character(a$hiv_sero_date[a$code == vids$code[r]][1])			if(vids$a[r] == 0) {next}			vids$dt.init[r] <- as.character(a$art_fst[a$code == vids$code[r]])			}			vids$dt.midp <- as.Date(vids$dt.midp, "%d%b%Y")			vids$dt.init <- as.Date(vids$dt.init, "%d%b%Y")			vids$y.init <- as.numeric(substr(as.character(vids$dt.init), 1, 4))save.image("~/Desktop/pman")#
+	fup <- vids[, c("code", "a", "dt.midp", "dt.init")]		names(fup) <- c("code", "a", "dt.str", "dt.end")			for(r in 1:nrow(fup)) {				if(is.na(fup$dt.end[r]) == FALSE) {next}				fup$dt.end[r] <- as.character(max(a$dt.int))				}#
+			y.str <- min(c(as.numeric(substr(as.character(fup$dt.str), 1, 4)), as.numeric(substr(as.character(fup$dt.end), 1, 4))))			y.end <- max(c(as.numeric(substr(as.character(fup$dt.str), 1, 4)), as.numeric(substr(as.character(fup$dt.end), 1, 4))))			tmp <- as.data.frame(matrix(0, nrow = nrow(fup), ncol = as.numeric(y.end - y.str) + 1))				names(tmp) <- as.character(paste("y", y.str:y.end, sep = ""))			fup <- as.data.frame(cbind(fup, tmp))#
+			for(r in 1:nrow(fup)) {				y.str <- as.numeric(substr(as.character(fup$dt.str[r]), 1, 4))				y.end <- as.numeric(substr(as.character(fup$dt.end[r]), 1, 4))				if(y.str == y.end) {fup[r, y.end-1991] <- as.numeric(fup$dt.end[r] - fup$dt.str[r]); next}#
+				for(f in y.str:y.end) { 					if(f == y.str) {fup[r, f-1991] <- as.numeric(as.Date(paste(y.str, "-12-31", sep = "")) - fup$dt.str[r]); next}					if(f == y.end) {fup[r, f-1991] <- as.numeric(fup$dt.end[r] - as.Date(paste(y.end, "-01-01", sep = ""))); next}					fup[r, f-1991] <- c(365)					}				}#
+				fup$fup <- c(0)					for(r in 1:nrow(fup)) {						fup$fup[r] <- sum(fup[r, c(5:21)])						}							y.str <- min(c(as.numeric(substr(as.character(fup$dt.str), 1, 4)), as.numeric(substr(as.character(fup$dt.end), 1, 4))))			y.end <- max(c(as.numeric(substr(as.character(fup$dt.str), 1, 4)), as.numeric(substr(as.character(fup$dt.end), 1, 4))))	init <- as.data.frame(matrix(NA, nrow = as.numeric(y.end - y.str) + 1, ncol = 3))		names(init) <- c("y", "x", "pt")						init$y <- c(y.str:y.end)#
+			for(r in 1:nrow(init)) {				init$x[r] <- nrow(na.omit(vids[vids$y.init == init$y[r], ]))				init$pt[r] <- sum(fup[, init$y[r] - 1991])				}				init$pt <- init$pt/365	init$prd <- c(0)		init$prd[init$y > 1995 & init$y < 2001] <- c(1)		init$prd[init$y > 2000 & init$y < 2005] <- c(2)		init$prd[init$y > 2004 & init$y < 2009] <- c(3)		init$prd[init$y > 2008] <- c(4)	init2 <- as.data.frame(matrix(NA, nrow = length(unique(init$prd)), ncol = 4))		names(init2) <- c("y", "x", "pt", "prd")		init2$prd <- 1:max(init$prd)		for(r in 1:nrow(init2)) {			init2$y[r] <- paste(min(init$y[init$prd == init2$prd[r]]), max(init$y[init$prd == init2$prd[r]]), sep = "-")			init2$x[r] <- sum(init$x[init$prd == init2$prd[r]])			init2$pt[r] <- sum(init$pt[init$prd == init2$prd[r]])			}	init3 <- pois.exact(init2$x, init2$pt)[, c(1:5)]		init4 <- as.data.frame(cbind(init2$y, init2$x, init2$pt, init2$prd, init3$rate, init3$lower, init3$upper), 					stringsAsFactors = FALSE)		names(init4) <- c("y", "x", "pt", "prd",
+"rate", "lower", "upper")			init4$rate <- round(as.numeric(init4$rate) * 100, 2)			init4$lower <- round(as.numeric(init4$lower) * 100, 2)			init4$upper <- round(as.numeric(init4$upper) * 100, 2)#
+		fit <- glm(init3$rate ~ init3$y)		co <- coef(fit)	quartz(width = 8, height = 6)		plotCI(init$y, init$rate, ui = init$upper, li = init$lower, 			ylim = c(0, 150),			axes = FALSE, ylab = "Rate (per 100 person-years)", xlab = "Year")			axis(side = 1, at = c(min(init$y):max(init$y)), labels = c("96", "97", "98", 				"99", "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10",				"11", "12"))			axis(side = 2, at = c(0, 50, 100, 150), labels = c("0", "50", "100", "150"))	# Initiation rates among eligible		eli <- as.data.frame(matrix(NA, nrow = as.numeric(2012-1996) + 1, ncol = 3))			names(eli) <- c("y", "x", "pt")			eli$y <- c(1996:2012)				for(r in 1:nrow(eli)) {					eli$pt[r] <- sum(a$duration[a$y == eli$y[r] & a$eligibility == 1])					eli$x[r] <- length(a$code[a$y == eli$y[r] & a$art_init == 1 & a$eligibility == 1])					}					eli$pt <- eli$pt/365#
+			eli <- pois.exact(eli$x, eli$pt)[, c(1:5)]			eli$y <- c(1996:2012)			eli$rate <- round(eli$rate * 10, 1)			eli$lower <- round(eli$lower * 10, 1)			eli$upper <- round(eli$upper * 10, 1)			eli <- eli[, c("y", "x", "pt", "rate", "lower", "upper")]#
+	# Initiation rates among non-eligible		nel <- as.data.frame(matrix(NA, nrow = as.numeric(2012-1996) + 1, ncol = 3))			names(nel) <- c("y", "x", "pt")			nel$y <- c(1996:2012)				for(r in 1:nrow(nel)) {					nel$pt[r] <- sum(a$duration[a$y == nel$y[r] & a$eligibility == 0])					nel$x[r] <- length(a$code[a$y == nel$y[r] & a$art_init == 1 & a$eligibility == 0])					}							nel$pt <- nel$pt/365#
+			nel <- pois.exact(nel$x, nel$pt)[, c(1:5)]			nel$y <- c(1996:2012)			nel$rate <- round(nel$rate * 10, 1)			nel$lower <- round(nel$lower * 10, 1)			nel$upper <- round(nel$upper * 10, 1)			nel <- nel[, c("y", "x", "pt", "rate", "lower", "upper")]#
+	# Time to initiation by seroconversion year		vids$y.midp <- as.numeric(substr(as.character(vids$dt.midp), 1, 4))		vids$tti[is.na(vids$dt.init) == FALSE] <- round(as.numeric(vids$dt.init[is.na(vids$dt.init) == FALSE] - 													vids$dt.midp[is.na(vids$dt.init) == FALSE])/360, 1)			vids$y.init.f <- c(0)				vids$y.init.f[vids$a == 1 & vids$y.init > 1996 & vids$y.init < 2002] <- c(1)				vids$y.init.f[vids$a == 1 & vids$y.init > 2001 & vids$y.init < 2007] <- c(2)				vids$y.init.f[vids$a == 1 & vids$y.init > 2006] <- c(3)					table(vids$y.init.f, vids$a, exclude = NULL)			fivenum(vids$tti[vids$y.init.f == 1])			fivenum(vids$tti[vids$y.init.f == 2])			fivenum(vids$tti[vids$y.init.f == 3])				vids$psid <- c(NA)		for(r in 1:nrow(vids)) {			vids$psid[r] <- na.omit(as.character(dtp$PSEUDO[dtp$BART_CODE == vids$code[r]]))[1]			}		# dc :: CD4+ data							dc <- as.data.frame(read.csv("~/Documents/1st/A_u9/Data/BART_ACCESS_2014JUN/CSV/bart_uhri_may2014_cd4.csv"))				dc$dt.tst <- as.Date(dc$testda
+te, "%d%b%Y")				dc$c00 <- round(dc$RESULT/100, 2)				dc <- dc[is.na(dc$dt.tst) == FALSE, ]						dc <- dc[is.na(dc$BART_CODE) == FALSE, ]			vids$c.init <- c(NA)			for(r in 1:nrow(vids)) {				if(is.na(vids$dt.init[r]) == TRUE) {next}					code <- vids$code[r]					dt.init <- vids$dt.init[r]					vids$c.init[r] <- dc$c00[dc$BART_CODE == code & dc$dt.tst == max(dc$dt.tst[dc$BART_CODE == code & dc$dt.tst < dt.init])]					}
+save.image()
+library(rgdal)
+setwd("/Users/drmj/Dropbox/Docs/CANDISP/Data/study_AIKNV/Data/BritishColumbiaGAF")
+ogrInfo(dsn = ".", layer = "BritishColumbiaGAF")
+setwd("/Users/drmj/Desktop/201203_VANCOUVER_CSD_SHP")
+readOGR(dsn = ".", layer = "201203_VANCOUVER_CSD")
+vanshp <- readOGR(dsn = ".", layer = "201203_VANCOUVER_CSD")
+plot(vanshp)
+setwd("/Users/drmj/Dropbox/Docs/CANDISP/Data/"
+)
+disp <- getKMLcoordinates(textConnection(system("unzip -p disp.kmz", intern = TRUE)))
+library(maptools)
+library(maptools)
+install.packages("maptools")
+library(maptools)
+install.packages("rgeos")
+library(maptools)
+library(ggplot2)
+install.packages("ggplot2")
+setwd("/Users/drmj/Dropbox/Docs/CANDISP/Data/study_AIKNV/Data/BritishColumbiaGAF")bcshp <- readOGR(dsn = ".", layer = "BritishColumbiaGAF")
+plot(bcshp)
+summary(bcshp)
+names(bcshp)
+table(bcshp$CSDNAME)
+names(bcshp)
+table(bcshp$CSDNAME)
+unique(bcshp$CSDNAME)
+unique(bcshp$CSDNAME)[substr(unique(bcsh$CSDNAME), 1, 2) == "Va"]
+unique(bcshp$CSDNAME)[substr(unique(bcshp$CSDNAME), 1, 2) == "Va"]
+vanshp <- subset(bcshp, bcshp$CSDNAME == "Vancouver")
+plot(vanshp)
+setwd("/Users/drmj/Dropbox/Docs/CANDISP/Data/")
+disp <- getKMLcoordinates(textConnection(system("unzip -p disp.kmz", intern = TRUE)))
+disp <- as.data.frame(matrix(unlist(disp), nrow = length(disp), byrow = T))[, c(1, 2)]
+names(disp) <- c("lon", "lat")
+classdisp
+class(disp)
+coordinates(disp)
+head(disp)
+coordinates(disp) <- c("lon", "lat")
+plot(disp)
+plot(vanshp, add = T)
+plot(vanshp)
