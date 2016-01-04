@@ -29,6 +29,7 @@ library(pgirmess)     ## Spatial autocorrelation
 library(RColorBrewer) ## Visualization
 library(classInt)     ## Class intervals
 #library(spgwr)        ## GWR
+library(sqldf)
 library(rgdal)
 library(ggmap)
 library(plotrix)
@@ -346,14 +347,16 @@ canOne <- candisp[1,]
 subSC <- schools[1:3,]
 canOne <- matrix(canOne,ncol=2)
 
+############################################################################################################
 #The origin has to be longer than the destination EX: if dispensary has 88 obs and school only 80, you want
 # to go through all disp and look at distance to school to pick min distance
-# if there is only 10 police stations  you want to go through all dispensaries and look at 
+# if there is only 10 police stations  you want to go through all dispensaries and look at
+
 minDistance <- function(origin, destination) {
   ndestin  <- nrow(destination)
   norigin  <- nrow(origin)
   if(nrow(destination) < nrow(origin)) stop("# of obs. in origin has to be greater than destination for the correct results", call. = F)
-
+  
   dest     <- data.frame(2,1:norigin)
   disp     <- data.frame(2,1:norigin)
   distance <- data.frame(1:norigin)
@@ -374,6 +377,7 @@ minDistance <- function(origin, destination) {
   names(distance) <- newNames
   return(data.frame(distance))
 }
+##############################################################################################################
 sch.disp.dist <-minDistance(origin=dest.school,destination=or.disp)
 newb <-minDistance(origin=or.disp,destination=dest.school)
 str(sch.disp.dist)
@@ -391,49 +395,135 @@ sp_close.sch.disp <- SpatialPointsDataFrame(coords=sp_close.sch.disp,sch.disp.di
 
 
 close.sch.disp <- vanmapped + geom_point(data=sp_close.sch@data,aes(x=lond, y=latd,colour="School"),size=2)+
-                  geom_point(data=sp_close.sch.disp@data,aes(x=lono, y=lato,colour="Dispensary"),size=2)+
-                  scale_colour_manual(name='POI', 
+  geom_point(data=sp_close.sch.disp@data,aes(x=lono, y=lato,colour="Dispensary"),size=2)+
+  scale_colour_manual(name='POI', 
                       values=c('School'='red', 'Dispensary'='green'),guide='legend')+
-                  ggtitle("Closest proximity schools and \n dispensaries")+
-                  stat_density2d(sp_close.sch.disp@data,aes(x = lono, y = lato, 
-                     fill = ..level.. , alpha = ..level..),size = 2, bins = 4, 
+  ggtitle("Closest proximity schools and \n dispensaries")+
+  stat_density2d(sp_close.sch.disp@data,aes(x = lono, y = lato, 
+                                            fill = ..level.. , alpha = ..level..),size = 2, bins = 4, 
                  data = crimes, geom = 'polygon') 
 
 close.sch.disp
 
 
 grid.arrange(school.disp, close.sch.disp, ncol=2)
- ## Transforming all the data into Spatial points data frame
- ## Namely: dispensaries, schools, police, hospitals, liquor, income
+## Transforming all the data into Spatial points data frame
+## Namely: dispensaries, schools, police, hospitals, liquor, income
 
 
 ## NOW FOR SPATIAL ANAlYSIS
 ## Heterogeneous Poissson, poisson cluster, Markov
-## point process geterogenous Ppoisson proccess
+## point process heterogenous Poisson proccess
 ## Knox method and k function
 ## Playing around with examples
 summary(candisp)
 class(candisp.sp[,1])
-disp.patter <- ppp(candisp[,1], candisp[,2], c(-123.20,-123.03), c(49.19,49.32))
-plot(disp.patter)
-plot(Kest(disp.patter))
 
 
-school.pattern <- ppp(school)
+names(candisp)
+names(crimes)
+names(incpost.f)[2] <- "lon"
+names(incpost.f)
+names(schools)
+
+#################################################################################################
+# ALL THE MARKS SHOULD BE STORED AS FACTOR
+
+m1         <- as.factor(rep("disp",nrow(candisp)))
+p.candisp  <- ppp(candisp[,1], candisp[,2], c(-123.20,-123.0), c(49.19,49.30),marks=m1)
+m2         <- as.factor(rep("crime",nrow(crimes)))  # next step will reject poitns based on the window and some will be duplicates
+p.crime    <- ppp(crimes[,6], crimes[,7], c(-123.20,-123.0), c(49.19,49.30),marks=m2)
+
+duplicated(schools)  # GET RID OF DUPLICATES
+unique.schools <- schools[!duplicated(schools), ]
+
+m3        <- as.factor(rep("school",nrow(unique.schools)))
+p.school  <- ppp(unique.schools[,1], unique.schools[,2], c(-123.20,-123.0), c(49.19,49.30),marks=m3)
+
+m4        <- as.factor( rep("income",nrow(incpost.f)))
+p.incpost <- ppp(incpost.f[,2], incpost.f[,3], c(-123.20,-123.0), c(49.19,49.30),marks=m4)
+
+m5        <- as.factor(rep("hospital",length(hcr@data$NAME)))
+p.hosp   <- ppp(hcr@data$X, hcr@data$Y, c(-123.20,-123.0), c(49.19,49.30),marks=m5)
+
+m6        <- as.factor(rep("police",length(police@data$NAME)))
+p.police   <- ppp(police@data$X, police@data$Y, c(-123.20,-123.0), c(49.19,49.30),marks=m6)
+
+all.points <- superimpose(p.school,p.candisp,p.crime,p.hosp,p.police)
+
+rm(m1,m2,m3,m4,m5,m6)
+# OR ALTERNATIVELY 
+# m <- marks(df)
+# is.factor(m)
+
+all.points
+
+plot(all.points)
+marks(all.points)
+table(marks(all.points))
+plot(Kest(p.crime,correction=c("Ripley","isotropic","best")))
+plot(Kest(all.points,correction=c("Ripley","isotropic","best")))
+
+
+candisp.ppm <- ppm(p.candisp,~1,Poisson())
+candisp.ppm
+school.ppm <- ppm(p.school,~1,Poisson())
+school.ppm
+
+#################################################################################################
+# To test if the deviation is stat. sig Monte Carlo test has to be performed
+set.seed(42)
+all.points <- as.list(all.points)
+monte.test <- envelope(all.points,Kest,nsim=40)
+plot(monte.test)
+
+summary(all.points)
+plot(split(all.points))
+
+den <- density(all.points)
+ppm(all.points, ~ marks, Poisson())
+
+
+#################################################################################################
+# Applying density to marked points
+
+V <- split(all.points)
+A <- lapply(V,adaptive.density)
+plot(as.listof(A))
+
+# OR 
+
+A <- by(all.points, FUN=adaptive.density)
+plot(A)
+
+# Assuming that rgw point process is inhomogenous
+# this can be estimated by first order properties such as
+# intensity measure  or intensity funtion using quadrate counting and kernel smoothing
+
+# often times we want ot know if intensity of points depends on the values of a covariate
+# postal code is a possible covariate for location of dispensaries
+str(incpost.f)
+geo <- incpost.f$id
 
 
 spdisp <- elide(candisp.sp, scale = TRUE)
 sppol  <- elide(police, scale = TRUE)
 spsch  <- elide(schools.sp, scale = TRUE)
 
-r <- seq(0, sqrt(2)/6, by = 0.005)
-envdisp <- envelope(as(spdisp, "ppp"), fun = Gest,r = r, nrank = 2, nsim = 99)
-envschool <- envelope(as(spsch, "ppp"), fun = Gest, r = r, nrank = 2, nsim = 99)
-envpolice <- envelope(as(sppol, "ppp"), fun = Gest,r = r, nrank = 2, nsim = 99)
-Gresults <- rbind(envdisp, envschool, envpolice)
-Gresults <- cbind(Gresults, DATASET = rep(c("disp","school", "pol"), each = length(r)))
+summary(spsch)
 
 
+ppp.disp <- ppp(candisp[,1],candisp[,2],c(-123.3,-123.01),c(49.1,49.4))
+plot(ppp.disp)
+plot(Kest(ppp.disp))
+
+envdisp <- envelope(as(spdisp, "ppp"), fun = Kest, nrank = 2, nsim = 99)
+envschool <- envelope(as(spsch, "ppp"), fun = Kest, r = r, nrank = 2, nsim = 99)
+envpolice <- envelope(as(sppol, "ppp"), fun = Kest,r = r, nrank = 2, nsim = 99)
+Kresults <- rbind(envdisp, envschool, envpolice)
+Kresults <- cbind(Kresults, DATASET = rep(c("disp","school", "pol"), each = length(r)))
+
+plot(Kresults)
 # Point Pattern Processes: Complete Spatial Randomness
 # Homogeneous poisson process
 candisp_ppp <- as(candisp.sp,"ppp")
@@ -459,3 +549,54 @@ plot(qt, add = TRUE, cex =.5)
 
 mse<-mse2d(flinvxy,flbord, -150, 150)
 plot(mse$h, mse$mse, xlab="Bandwidth", ylab="MSE",type="l", xlim=c(100,600), ylim=c(-30,50))
+#################################################################################################
+# Comparing spatial point patterns using Ripley's K function
+# Firstly, Quadrat analysis uses univariate analysis of point distribubtions it doesnt 
+# study the relationships between the processes as a function of distance. Secondly, by 
+# binning the points in quadrats it loses power. a loss of power means you might fail 
+# to identify important patterns or else it implies need to collect more data to achieve research objectives
+# Sources stackexchange "how to compare two spatial poin patterns by wuber"
+
+
+all.points <- as.data.frame(all.points)
+t.test
+l.liq <- all.points[all.points$marks == "school", ]
+class(l.liq)
+ppm(all.points, trend = ~1,interaction=Poisson(),method="ho")
+
+
+
+#################################################################################################
+# TESTING the Lattice graphics
+cc <- coordinates(police)
+m.SL<- SpatialLines(list(Lines(list(Line(cc)))))
+install.packages("latticeExtra")
+library(latticeExtra)
+# LAttice graphics
+
+str(all.points)
+names(all.points)[1] <- "LONGITUDE"
+names(all.points)[2] <- "LATITUDE"
+
+table(city$CPC_NAME)
+
+spplot(city,zcol="CPC_NAME",auto.key=FALSE,col.regions=c(incpost.f$lon,incpost.f$lat))
+trial.lattice <- xyplot(LATITUDE~LONGITUDE|marks,group=marks,data=all.points,
+                        as.layer=spplot(city,zcol="CPC_NAME"),
+                        xlab = "Longitude", ylab = "Latitude")
+coordinates(all.points)<-~LONGITUDE+LATITUDE
+city.list <- list(Polygons(list(Polygon(city)), "city"))
+city.sr <- SpatialPolygons(city.list)
+van.poly <- list("sp.polygons", city.sr)
+city.layout <- list(van.poly, pts)
+scale <- list("SpatialPolygonsRescale", layout.scale.bar(), offset = c(180200, 329800), 
+              scale = 1000, fill = c("transparent","black"))
+pts <- list("sp.points", city, pch = 3, col = "black")
+city.layout <- list(van.poly,pts)
+spplot(all.points,sp.layout = city.layout)
+
+
+trial.lattice 
+trellis.focus("panel", 1, 1)
+trellis.unfocus("panel", 1, 1)
+spplot(city@data$)
